@@ -63,11 +63,41 @@ sealed class WebcamTest : MonoBehaviour
 
         // Detected tag visualization
         foreach (var tag in _detector.DetectedTags)
+        {
             _drawer.Draw(tag.ID, tag.Position, tag.Rotation, _tagSize);
+            Debug.Log("Pos: " + tag.Position + " ID: " + tag.ID + " Rotation: " + tag.Rotation.eulerAngles);
+        }
 
         // Profile data output (with 30 frame interval)
         if (Time.frameCount % 30 == 0)
             _debugText.text = _detector.ProfileData.Aggregate
               ("Profile (usec)", (c, n) => $"{c}\n{n.name} : {n.time}");
+    }
+
+    void OnDrawGizmos()
+    {
+        
+        if (_detector != null)
+        {
+            int index = 0;
+            Vector3 previousPos = Vector3.zero;
+
+            foreach (var tag in _detector.DetectedTags)
+            {
+                //Vector3 targetBackward = tag.Rotation * Vector3.back;
+                //Gizmos.DrawSphere(tag.Position * 100, 10);
+                //Gizmos.DrawRay(tag.Position * 100, targetBackward*1000);
+
+                if (index > 0)
+                {
+                    Gizmos.DrawLine(tag.Position * 100, previousPos * 100);
+                }
+
+                previousPos = tag.Position;
+
+                index++;
+            }
+        }
+        
     }
 }
