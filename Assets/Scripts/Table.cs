@@ -37,7 +37,7 @@ public class Table : MonoBehaviour
         apriltags = _apriltags;
 
         #region Calculate rotation
-        List<Vector3> rotations = new List<Vector3>();
+        /*List<Vector3> rotations = new List<Vector3>();
         foreach (AprilTag.TagPose apriltag in apriltags)
         {
             rotations.Add(apriltag.Rotation.eulerAngles);
@@ -49,8 +49,11 @@ public class Table : MonoBehaviour
         }
 
         Vector3 medianEulerRotation = MedianVector3(rotations);
+        GetRotationUsingPosition(_apriltags, digitalApriltags);
 
-        transform.rotation = Quaternion.Euler(medianEulerRotation) * Quaternion.Euler(rotationOffset);
+        transform.rotation = Quaternion.Euler(medianEulerRotation) * Quaternion.Euler(rotationOffset);*/
+
+        transform.rotation = GetRotationUsingPosition(_apriltags, digitalApriltags) * Quaternion.Euler(rotationOffset);
         #endregion
 
         #region Calculate position
@@ -134,6 +137,85 @@ public class Table : MonoBehaviour
 
         // Return a new Vector3 with the median x, y and z
         return new Vector3(medianX, medianY, medianZ);
+    }
+
+    Quaternion GetRotationUsingPosition(List<AprilTag.TagPose> _apriltags, List<DigitalApriltag> _digitalApriltags)
+    {
+        // Check if list has at least 3 tags
+        if (_apriltags.Count < 3)
+        {
+            return Quaternion.Euler(Vector3.zero);
+        }
+        
+        // Get a list of all digital Apriltags that have been detected
+        List<DigitalApriltag> foundDigitalApriltags = _digitalApriltags.Where(d => (_digitalApriltags.Select(d => d.ID).Intersect(_apriltags.Select(a => a.ID)).Contains(d.ID))).ToList();
+
+        // Initalize a list for candidates for the three digital Apriltags: upper left, lower left and upper right. Tags have to be unique.
+        List<DigitalApriltag> candidates = new List<DigitalApriltag>();
+
+        // Find most upper left digital Apriltag, where up is more important than left
+        candidates = foundDigitalApriltags.Where(d => d.Position.z == foundDigitalApriltags.Max(a => a.Position.z)).ToList();
+        DigitalApriltag upperLeftDigital = candidates.Where(d => d.Position.x == candidates.Min(a => a.Position.x)).FirstOrDefault();
+
+        // Remove the found digital Apriltag from the list
+        foundDigitalApriltags.Remove(upperLeftDigital);
+
+        // Find most upper right digital Apriltag, where right is more important than up
+        candidates = foundDigitalApriltags.Where(d => d.Position.x == foundDigitalApriltags.Max(a => a.Position.x)).ToList();
+        DigitalApriltag upperRightDigital = candidates.Where(d => d.Position.z == candidates.Max(a => a.Position.z)).FirstOrDefault();
+
+        // Remove the found digital Apriltag from the list
+        foundDigitalApriltags.Remove(upperRightDigital);
+
+        // Find most lower left digital Apriltag, where left is more important than down.
+        candidates = foundDigitalApriltags.Where(d => d.Position.z == foundDigitalApriltags.Min(a => a.Position.z)).ToList();
+        DigitalApriltag lowerLeftDigital = candidates.Where(d => d.Position.x == candidates.Min(a => a.Position.x)).FirstOrDefault();
+
+        // TEMP: debug the digital tag positions
+        Debug.Log("ul " + upperLeftDigital.Position + " ur " + upperRightDigital.Position + " ll " + lowerLeftDigital.Position);
+
+        // Check if Apriltags are on a straight line, in that case, complete rotation cannot be determined
+        if (
+            (upperLeftDigital.Position.x == upperRightDigital.Position.x) && (upperLeftDigital.Position.x == lowerLeftDigital.Position.x) ||
+            (upperLeftDigital.Position.z == upperRightDigital.Position.z) && (upperLeftDigital.Position.z == lowerLeftDigital.Position.z))
+        {
+            Debug.Log("Tags are on a single line");
+            return Quaternion.Euler(Vector3.zero);
+        }
+
+        // Get physical Apriltags corresponding to the found digital Apriltags
+        Vector3 upperLeftPosition = _apriltags.Where(a => a.ID == upperLeftDigital.ID).FirstOrDefault().Position;
+        Vector3 upperRightPosition = _apriltags.Where(a => a.ID == upperRightDigital.ID).FirstOrDefault().Position;
+        Vector3 lowerLeftPosition = _apriltags.Where(a => a.ID == lowerLeftDigital.ID).FirstOrDefault().Position;
+
+        // Get x-rotation
+        Vector2 upperLeftYZ = new Vector2(upperLeftPosition.y, upperLeftPosition.z);
+        Vector2 lowerLeftYZ = new Vector2(lowerLeftPosition.y, lowerLeftPosition.z);
+
+        Vector2 xDirection = lowerLeftYZ - upperLeftYZ;
+
+        float xAngle = Vector2.Angle(Vector2.up, xDirection);
+
+        // Get y-rotation
+        Vector2 upperLeftXZ = new Vector2(upperLeftPosition.x, upperLeftPosition.z);
+        Vector2 upperRightXZ = new Vector2(upperRightPosition.x, upperRightPosition.z);
+
+        Vector2 yDirection = upperLeftXZ - upperRightXZ;
+
+        float yAngle = Vector2.Angle(Vector2.down, yDirection);
+
+        // Get z-rotation
+        Vector2 upperLeftXY = new Vector2(upperLeftPosition.x, upperLeftPosition.y);
+        Vector2 upperRightXY = new Vector2(upperRightPosition.x, upperRightPosition.y);
+
+        Vector2 zDirection = upperRightXY - upperLeftXY;
+
+        float zAngle = Vector2.Angle(Vector2.right, zDirection);
+
+        Debug.Log(xAngle + " | " + yAngle + " | " + zAngle);
+
+        //return new Vector3(xAngle, yAngle, zAngle);
+        return Quaternion.Euler(xAngle,yAngle,zAngle);
     }
 
     // Drawing of Gizmos

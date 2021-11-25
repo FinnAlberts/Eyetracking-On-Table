@@ -11,7 +11,7 @@ public class DigitalApriltag
     public int ID;
 
     /// <summary>
-    /// Position of Apriltag relative to table
+    /// Position of Apriltag relative to center of table
     /// </summary>
     public Vector3 Position;
 
