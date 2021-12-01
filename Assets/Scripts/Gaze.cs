@@ -38,7 +38,7 @@ public class Gaze : MonoBehaviour
 
             if (Physics.Raycast(ray, out hit, Mathf.Infinity, layerMask))
             {
-                Gizmos.DrawSphere(hit.point, 1);
+                Gizmos.DrawSphere(hit.point, 0.005f);
             }
         }
     }

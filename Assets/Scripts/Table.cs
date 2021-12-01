@@ -25,6 +25,9 @@ public class Table : MonoBehaviour
     /// </summary>
     private List<AprilTag.TagPose> apriltags = new List<AprilTag.TagPose>();
 
+    private Vector3 upwardDirectionLerped = Vector3.zero;
+    private Vector3 forwardDirectionLerped = Vector3.zero;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -37,26 +40,26 @@ public class Table : MonoBehaviour
         apriltags = _apriltags;
 
         #region Calculate rotation
-        /*List<Vector3> rotations = new List<Vector3>();
-        foreach (AprilTag.TagPose apriltag in apriltags)
-        {
-            rotations.Add(apriltag.Rotation.eulerAngles);
-        }
+        //SetRotation(_apriltags, digitalApriltags);
+        SetRotationUsingTagRotation();
+        #endregion
 
-        if (rotations.Count == 0)
+        #region Calculate position
+        SetPosition();
+        #endregion
+    }
+
+    /// <summary>
+    /// Set the position of the table
+    /// </summary>
+    void SetPosition()
+    {
+        // Check if Apriltags have been detected
+        if (apriltags.Count == 0)
         {
             return;
         }
 
-        Vector3 medianEulerRotation = MedianVector3(rotations);
-        GetRotationUsingPosition(_apriltags, digitalApriltags);
-
-        transform.rotation = Quaternion.Euler(medianEulerRotation) * Quaternion.Euler(rotationOffset);*/
-
-        transform.rotation = GetRotationUsingPosition(_apriltags, digitalApriltags) * Quaternion.Euler(rotationOffset);
-        #endregion
-
-        #region Calculate position
         Vector3 originPosition = Vector3.zero;
 
         // Foreach found Apriltag, calculate origin of table
@@ -75,7 +78,6 @@ public class Table : MonoBehaviour
 
         // Move table to that origin
         transform.position = originPosition;
-        #endregion
     }
 
     /// <summary>
@@ -139,12 +141,25 @@ public class Table : MonoBehaviour
         return new Vector3(medianX, medianY, medianZ);
     }
 
-    Quaternion GetRotationUsingPosition(List<AprilTag.TagPose> _apriltags, List<DigitalApriltag> _digitalApriltags)
+    /// <summary>
+    /// Set the rotation of the table
+    /// </summary>
+    /// <param name="_apriltags">List of detected Apriltags</param>
+    /// <param name="_digitalApriltags">List of all digital Apriltags</param>
+    void SetRotation(List<AprilTag.TagPose> _apriltags, List<DigitalApriltag> _digitalApriltags)
     {
+        // Check if Apriltags have been detected
+        if (_apriltags.Count == 0)
+        {
+            return;
+        }
+        
         // Check if list has at least 3 tags
         if (_apriltags.Count < 3)
         {
-            return Quaternion.Euler(Vector3.zero);
+            Debug.Log("Not enough visible tags to determine rotation");
+            SetRotationUsingTagRotation();
+            return;
         }
         
         // Get a list of all digital Apriltags that have been detected
@@ -171,51 +186,123 @@ public class Table : MonoBehaviour
         candidates = foundDigitalApriltags.Where(d => d.Position.z == foundDigitalApriltags.Min(a => a.Position.z)).ToList();
         DigitalApriltag lowerLeftDigital = candidates.Where(d => d.Position.x == candidates.Min(a => a.Position.x)).FirstOrDefault();
 
-        // TEMP: debug the digital tag positions
-        Debug.Log("ul " + upperLeftDigital.Position + " ur " + upperRightDigital.Position + " ll " + lowerLeftDigital.Position);
-
         // Check if Apriltags are on a straight line, in that case, complete rotation cannot be determined
         if (
             (upperLeftDigital.Position.x == upperRightDigital.Position.x) && (upperLeftDigital.Position.x == lowerLeftDigital.Position.x) ||
             (upperLeftDigital.Position.z == upperRightDigital.Position.z) && (upperLeftDigital.Position.z == lowerLeftDigital.Position.z))
         {
             Debug.Log("Tags are on a single line");
-            return Quaternion.Euler(Vector3.zero);
+            SetRotationUsingTagRotation();
+            return;
         }
 
         // Get physical Apriltags corresponding to the found digital Apriltags
         Vector3 upperLeftPosition = _apriltags.Where(a => a.ID == upperLeftDigital.ID).FirstOrDefault().Position;
         Vector3 upperRightPosition = _apriltags.Where(a => a.ID == upperRightDigital.ID).FirstOrDefault().Position;
         Vector3 lowerLeftPosition = _apriltags.Where(a => a.ID == lowerLeftDigital.ID).FirstOrDefault().Position;
+        Debug.DrawRay(upperLeftPosition, transform.up, Color.red, Time.deltaTime);
+        Debug.DrawRay(upperRightPosition, transform.up, Color.blue, Time.deltaTime);
+        Debug.DrawRay(lowerLeftPosition, transform.up, Color.green, Time.deltaTime);
 
-        // Get x-rotation
-        Vector2 upperLeftYZ = new Vector2(upperLeftPosition.y, upperLeftPosition.z);
-        Vector2 lowerLeftYZ = new Vector2(lowerLeftPosition.y, lowerLeftPosition.z);
+        // Calculate the normal of the plane and apply this normal to the upper direction of the table plane
+        Vector3 normal = Vector3.Cross(upperRightPosition - upperLeftPosition, lowerLeftPosition - upperLeftPosition);
+        transform.up = normal;
 
-        Vector2 xDirection = lowerLeftYZ - upperLeftYZ;
+        // Calculate offset angle 
+        Vector2 upperLeftLocal = new Vector2(upperLeftDigital.Position.x * transform.localScale.x, upperLeftDigital.Position.z * transform.localScale.z);
+        Vector2 lowerLeftLocal = new Vector2(lowerLeftDigital.Position.x * transform.localScale.x, lowerLeftDigital.Position.z * transform.localScale.z);
 
-        float xAngle = Vector2.Angle(Vector2.up, xDirection);
+        float offsetAngle = GetAngle(upperLeftLocal, lowerLeftLocal, Vector2.down, -Vector2.right);
 
-        // Get y-rotation
-        Vector2 upperLeftXZ = new Vector2(upperLeftPosition.x, upperLeftPosition.z);
-        Vector2 upperRightXZ = new Vector2(upperRightPosition.x, upperRightPosition.z);
+        // Project upper left and lower left to the normal plane
+        Vector3 upperLeftProjected = Vector3.ProjectOnPlane(upperLeftPosition, normal);
+        Vector3 lowerLeftProjected = Vector3.ProjectOnPlane(lowerLeftPosition, normal);
 
-        Vector2 yDirection = upperLeftXZ - upperRightXZ;
+        // Calculate the forward direction of the plane
+        Vector3 directionForward = GetDirection(upperLeftProjected, lowerLeftProjected).normalized;
 
-        float yAngle = Vector2.Angle(Vector2.down, yDirection);
+        // Set the plane rotation to the forward direction and upward (= normal) direction
+        transform.rotation = Quaternion.LookRotation(directionForward, normal);
 
-        // Get z-rotation
-        Vector2 upperLeftXY = new Vector2(upperLeftPosition.x, upperLeftPosition.y);
-        Vector2 upperRightXY = new Vector2(upperRightPosition.x, upperRightPosition.y);
+        // Rotate the object in the calculated offset angle
+        transform.Rotate(Vector3.up, 180 + offsetAngle);
+    }
 
-        Vector2 zDirection = upperRightXY - upperLeftXY;
+    /// <summary>
+    /// Set the rotation based on rotation of the Apriltags
+    /// </summary>
+    void SetRotationUsingTagRotation()
+    {
+        List<Vector3> rotations = new List<Vector3>();
+        Vector3 averageUpwardDirection = Vector3.zero;
+        Vector3 averageForwardDirection = Vector3.zero;
+        foreach (AprilTag.TagPose apriltag in apriltags)
+        {
+            Vector3 upwardDirection = apriltag.Rotation * Vector3.back;
+            Vector3 forwardDirection = apriltag.Rotation * Vector3.up;
 
-        float zAngle = Vector2.Angle(Vector2.right, zDirection);
+            if (Vector3.Dot(Vector3.up, upwardDirection) < 0)
+            {
+                upwardDirection = -upwardDirection;
+            }
 
-        Debug.Log(xAngle + " | " + yAngle + " | " + zAngle);
+            Vector3 rotation = Quaternion.LookRotation(forwardDirection, upwardDirection).eulerAngles;
 
-        //return new Vector3(xAngle, yAngle, zAngle);
-        return Quaternion.Euler(xAngle,yAngle,zAngle);
+            rotations.Add(rotation);
+            averageUpwardDirection += upwardDirection;
+            averageForwardDirection += forwardDirection;
+        }
+
+        if (rotations.Count == 0)
+        {
+            return;
+        }
+
+        forwardDirectionLerped = Vector3.Lerp(forwardDirectionLerped, averageForwardDirection, Time.deltaTime * 10);
+        upwardDirectionLerped = Vector3.Lerp(upwardDirectionLerped, averageUpwardDirection, Time.deltaTime * 10);
+
+        Vector3 medianEulerRotation = MedianVector3(rotations);
+
+        transform.rotation = Quaternion.LookRotation(forwardDirectionLerped, upwardDirectionLerped) * Quaternion.Euler(rotationOffset);
+    }
+
+    /// <summary>
+    /// Calculate the direction between 2 points.
+    /// </summary>
+    /// <param name="_pointA">Point from</param>
+    /// <param name="_pointB">Point to</param>
+    /// <returns></returns>
+    public Vector3 GetDirection(Vector3 _pointA, Vector3 _pointB)
+    {
+        return (_pointB - _pointA).normalized;
+    }
+
+    /// <summary>
+    /// Calculate the angle between two points
+    /// </summary>
+    /// <param name="_positionA">Position 1</param>
+    /// <param name="_positionB">Position 2</param>
+    /// <param name="_fromDirection">Direction to calculate angle from.</param>
+    /// <param name="_dotDirection">The direction used to calculate if the angle is left or right from the fromDirection.</param>
+    /// <returns></returns>
+    public float GetAngle(Vector2 _positionA, Vector2 _positionB, Vector2 _fromDirection, Vector2 _dotDirection)
+    {
+        // Get direction between the two points
+        Vector2 direction = GetDirection(_positionA, _positionB);
+
+        // Calculate angle and dot
+        float angle = Vector2.Angle(_fromDirection, direction);
+        float dot = Vector2.Dot(direction, -_dotDirection);
+
+        // Check if angle is left or right from fromDirection
+        if (dot < 0)
+        {
+            // Apply correction
+            angle = -angle;
+        }
+
+        // Return the angle
+        return angle;
     }
 
     // Drawing of Gizmos
@@ -225,14 +312,24 @@ public class Table : MonoBehaviour
         foreach (DigitalApriltag digitalApriltag in digitalApriltags)
         {
             Gizmos.color = digitalApriltag.Color;
-            Gizmos.DrawSphere(RelativeVector(digitalApriltag.Position), 0.5f);
+            Gizmos.DrawSphere(RelativeVector(digitalApriltag.Position), 0.005f);
         }
 
         // Draw rays from Apriltags
-        Gizmos.color = Color.white;
         foreach (AprilTag.TagPose apriltag in apriltags)
         {
-            Gizmos.DrawRay(apriltag.Position, apriltag.Rotation * Vector3.back);
+            Vector3 upwardDirection = apriltag.Rotation * Vector3.back;
+            Vector3 forwardDirection = apriltag.Rotation * Vector3.up;
+
+            if (Vector3.Dot(Vector3.up, upwardDirection) < -0.2f)
+            {
+                upwardDirection = -upwardDirection;
+            }
+
+            Gizmos.color = Color.white;
+            Gizmos.DrawRay(apriltag.Position, upwardDirection);
+            Gizmos.color = Color.magenta;
+            Gizmos.DrawRay(apriltag.Position, forwardDirection);
         }
     }
 }

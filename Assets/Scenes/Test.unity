@@ -479,11 +479,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2897695632930535531, guid: d00a7e65122e269458d1eb382dd0f8b9, type: 3}
       propertyPath: m_LocalScale.x
-      value: 2.97
+      value: 0.0297
       objectReference: {fileID: 0}
     - target: {fileID: 2897695632930535531, guid: d00a7e65122e269458d1eb382dd0f8b9, type: 3}
       propertyPath: m_LocalScale.z
-      value: 2.1
+      value: 0.021
       objectReference: {fileID: 0}
     - target: {fileID: 2897695632930535531, guid: d00a7e65122e269458d1eb382dd0f8b9, type: 3}
       propertyPath: m_LocalPosition.x
@@ -531,7 +531,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2897695632930535535, guid: d00a7e65122e269458d1eb382dd0f8b9, type: 3}
       propertyPath: rotationOffset.x
-      value: 180
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2897695632930535535, guid: d00a7e65122e269458d1eb382dd0f8b9, type: 3}
       propertyPath: rotationOffset.y
@@ -539,11 +539,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2897695632930535535, guid: d00a7e65122e269458d1eb382dd0f8b9, type: 3}
       propertyPath: rotationOffset.z
-      value: -90
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2897695632930535535, guid: d00a7e65122e269458d1eb382dd0f8b9, type: 3}
       propertyPath: scaleCalibration
-      value: 70
+      value: 0.55
       objectReference: {fileID: 0}
     - target: {fileID: 2897695632930535535, guid: d00a7e65122e269458d1eb382dd0f8b9, type: 3}
       propertyPath: digitalApriltags.Array.size
@@ -695,11 +695,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2897695632930535535, guid: d00a7e65122e269458d1eb382dd0f8b9, type: 3}
       propertyPath: digitalApriltags.Array.data[0].Position.x
-      value: -5
+      value: -3.95
       objectReference: {fileID: 0}
     - target: {fileID: 2897695632930535535, guid: d00a7e65122e269458d1eb382dd0f8b9, type: 3}
       propertyPath: digitalApriltags.Array.data[0].Position.z
-      value: 5
+      value: 3.52
       objectReference: {fileID: 0}
     - target: {fileID: 2897695632930535535, guid: d00a7e65122e269458d1eb382dd0f8b9, type: 3}
       propertyPath: digitalApriltags.Array.data[1].Position.x
@@ -707,19 +707,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2897695632930535535, guid: d00a7e65122e269458d1eb382dd0f8b9, type: 3}
       propertyPath: digitalApriltags.Array.data[1].Position.z
-      value: 5
+      value: 3.52
       objectReference: {fileID: 0}
     - target: {fileID: 2897695632930535535, guid: d00a7e65122e269458d1eb382dd0f8b9, type: 3}
       propertyPath: digitalApriltags.Array.data[2].Position.x
-      value: 5
+      value: 3.95
       objectReference: {fileID: 0}
     - target: {fileID: 2897695632930535535, guid: d00a7e65122e269458d1eb382dd0f8b9, type: 3}
       propertyPath: digitalApriltags.Array.data[2].Position.z
-      value: 5
+      value: 3.52
       objectReference: {fileID: 0}
     - target: {fileID: 2897695632930535535, guid: d00a7e65122e269458d1eb382dd0f8b9, type: 3}
       propertyPath: digitalApriltags.Array.data[3].Position.x
-      value: 5
+      value: 3.95
       objectReference: {fileID: 0}
     - target: {fileID: 2897695632930535535, guid: d00a7e65122e269458d1eb382dd0f8b9, type: 3}
       propertyPath: digitalApriltags.Array.data[3].Position.z
@@ -727,11 +727,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2897695632930535535, guid: d00a7e65122e269458d1eb382dd0f8b9, type: 3}
       propertyPath: digitalApriltags.Array.data[4].Position.x
-      value: 5
+      value: 3.95
       objectReference: {fileID: 0}
     - target: {fileID: 2897695632930535535, guid: d00a7e65122e269458d1eb382dd0f8b9, type: 3}
       propertyPath: digitalApriltags.Array.data[4].Position.z
-      value: -5
+      value: -3.52
       objectReference: {fileID: 0}
     - target: {fileID: 2897695632930535535, guid: d00a7e65122e269458d1eb382dd0f8b9, type: 3}
       propertyPath: digitalApriltags.Array.data[5].Position.x
@@ -739,19 +739,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2897695632930535535, guid: d00a7e65122e269458d1eb382dd0f8b9, type: 3}
       propertyPath: digitalApriltags.Array.data[5].Position.z
-      value: -5
+      value: -3.52
       objectReference: {fileID: 0}
     - target: {fileID: 2897695632930535535, guid: d00a7e65122e269458d1eb382dd0f8b9, type: 3}
       propertyPath: digitalApriltags.Array.data[6].Position.x
-      value: -5
+      value: -3.95
       objectReference: {fileID: 0}
     - target: {fileID: 2897695632930535535, guid: d00a7e65122e269458d1eb382dd0f8b9, type: 3}
       propertyPath: digitalApriltags.Array.data[6].Position.z
-      value: -5
+      value: -3.52
       objectReference: {fileID: 0}
     - target: {fileID: 2897695632930535535, guid: d00a7e65122e269458d1eb382dd0f8b9, type: 3}
       propertyPath: digitalApriltags.Array.data[7].Position.x
-      value: -5
+      value: -3.95
       objectReference: {fileID: 0}
     - target: {fileID: 2897695632930535535, guid: d00a7e65122e269458d1eb382dd0f8b9, type: 3}
       propertyPath: digitalApriltags.Array.data[7].Position.z
