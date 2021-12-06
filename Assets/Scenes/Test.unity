@@ -123,6 +123,50 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &88521440
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 88521442}
+  - component: {fileID: 88521441}
+  m_Layer: 0
+  m_Name: Logger
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &88521441
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 88521440}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6e90765c53bfad64692f6e1f2ad5d23f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outputFile: D:\Bestanden\OneDrive\Bureaublad\log.txt
+--- !u!4 &88521442
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 88521440}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 338.3369, y: 70.58745, z: 691.877}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!20 &105886031 stripped
 Camera:
   m_CorrespondingSourceObject: {fileID: 3563047076754999263, guid: 2ac8e65a176ee5546bfa6f0fe04b05d6, type: 3}
@@ -355,10 +399,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e6bfa81d7f40eed4288959e901336b87, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  camera: {fileID: 105886031}
+  cam: {fileID: 105886031}
   layerMask:
     serializedVersion: 2
     m_Bits: 4294967295
+  onRaycastHit:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 88521441}
+        m_TargetAssemblyTypeName: Logger, Assembly-CSharp
+        m_MethodName: LogVector
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!4 &1398143381
 Transform:
   m_ObjectHideFlags: 0
@@ -776,7 +835,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3563047076754999261, guid: 2ac8e65a176ee5546bfa6f0fe04b05d6, type: 3}
       propertyPath: _decimation
-      value: 3
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3563047076754999261, guid: 2ac8e65a176ee5546bfa6f0fe04b05d6, type: 3}
       propertyPath: _resolution.x

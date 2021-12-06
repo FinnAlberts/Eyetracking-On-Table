@@ -239,6 +239,11 @@ public class Table : MonoBehaviour
                 upwardDirection = -upwardDirection;
             }
 
+            if (Vector3.Dot(Vector3.back, upwardDirection) < 0)
+            {
+                upwardDirection = -upwardDirection;
+            }
+
             // Add the directions to the average
             averageUpwardDirection += upwardDirection;
             averageForwardDirection += forwardDirection;
@@ -316,7 +321,12 @@ public class Table : MonoBehaviour
 
             // To correct for flickering, because the detector sometimes thinks the Apriltag is upside down, check if an Apriltag is facing down and if so, flip it around.
             // This will not cause issues, because the user will not look at the table upside down, so an Apriltag is always supposed to be looking up.
-            if (Vector3.Dot(Vector3.up, upwardDirection) < -0.2f)
+            if (Vector3.Dot(Vector3.up, upwardDirection) < 0)
+            {
+                upwardDirection = -upwardDirection;
+            }
+
+            if (Vector3.Dot(Vector3.back, upwardDirection) < 0)
             {
                 upwardDirection = -upwardDirection;
             }

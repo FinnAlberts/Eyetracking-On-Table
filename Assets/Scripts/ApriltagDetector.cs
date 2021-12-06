@@ -7,6 +7,9 @@ using UI = UnityEngine.UI;
 
 public class ApriltagDetector : MonoBehaviour
 {
+    /// <summary>
+    /// Event for when detected Apriltags have been updated
+    /// </summary>
     public UnityEvent<List<AprilTag.TagPose>> onDetectedApriltagsUpdated;
 
     [SerializeField] Vector2Int _resolution = new Vector2Int(1920, 1080);
