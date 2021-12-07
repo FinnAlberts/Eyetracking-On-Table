@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class Gaze : MonoBehaviour
+public class GazeManager : MonoBehaviour
 {
     /// <summary>
     /// The camera
@@ -19,6 +19,23 @@ public class Gaze : MonoBehaviour
     /// Event for when the raycast hits (which happens when looking at the table)
     /// </summary>
     public UnityEvent<Vector2> onRaycastHit;
+
+    // Making GazeManager into an singleton
+    private static GazeManager _instance;
+
+    public static GazeManager Instance { get { return _instance; } }
+
+    private void Awake()
+    {
+        if (_instance != null && _instance != this)
+        {
+            Destroy(this.gameObject);
+        }
+        else
+        {
+            _instance = this;
+        }
+    }
 
     private void Update()
     {

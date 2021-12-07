@@ -5,19 +5,18 @@ using Mirror;
 
 public class DataCommunicator : NetworkBehaviour
 {
-    public Vector2 raycastHit = Vector2.zero;
 
-    private void Update()
+    private void Start()
     {
-        if (isLocalPlayer)
+        if (GazeManager.Instance != null)
         {
-            ReceiveFromClient(raycastHit);
+            GazeManager.Instance.onRaycastHit.AddListener(SendDataToMaster);
         }
     }
 
     public void SendDataToMaster(Vector2 _vector2)
     {
-        raycastHit = _vector2;
+        ReceiveFromClient(_vector2);
     }
 
     [Command]
