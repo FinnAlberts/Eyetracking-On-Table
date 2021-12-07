@@ -517,6 +517,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 3953158920319912478, guid: 21d4d9f29581d1d4aaf9d7f65dafcfc9, type: 3}
+        m_TargetAssemblyTypeName: DataCommunicator, Assembly-CSharp
+        m_MethodName: SendDataToMaster
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!4 &1398143381
 Transform:
   m_ObjectHideFlags: 0
@@ -938,11 +950,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3563047076754999261, guid: 2ac8e65a176ee5546bfa6f0fe04b05d6, type: 3}
       propertyPath: _resolution.x
-      value: 1920
+      value: 1280
       objectReference: {fileID: 0}
     - target: {fileID: 3563047076754999261, guid: 2ac8e65a176ee5546bfa6f0fe04b05d6, type: 3}
       propertyPath: _resolution.y
-      value: 1080
+      value: 720
       objectReference: {fileID: 0}
     - target: {fileID: 3563047076754999261, guid: 2ac8e65a176ee5546bfa6f0fe04b05d6, type: 3}
       propertyPath: _webcamPreview

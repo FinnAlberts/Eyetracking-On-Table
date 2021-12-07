@@ -10,18 +10,6 @@ public class Logger : MonoBehaviour
     /// File to log to
     /// </summary>
     public string outputFile;
-    
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 
     public void LogVector(Vector2 _vector2)
     {
