@@ -43,7 +43,7 @@ public class GazeManager : MonoBehaviour
         if (cam != null)
         {
             // Cast a ray
-            Ray ray = cam.ScreenPointToRay(Input.mousePosition);
+            Ray ray = cam.ScreenPointToRay(InputManager.Instance.mousePosition);
 
             // Initialize hit variable
             RaycastHit hit;
@@ -64,10 +64,10 @@ public class GazeManager : MonoBehaviour
     private void OnDrawGizmos()
     {
         // Check for camera
-        if (cam != null)
-        {
+        if (cam != null && InputManager.Instance != null)
+        { 
             // Cast a ray
-            Ray ray = cam.ScreenPointToRay(Input.mousePosition);
+            Ray ray = cam.ScreenPointToRay(InputManager.Instance.mousePosition);
             Gizmos.color = Color.green;
             Gizmos.DrawRay(ray.origin, ray.direction * Mathf.Infinity);
 
