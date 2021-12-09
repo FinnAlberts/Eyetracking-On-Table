@@ -1,0 +1,33 @@
+{
+    "name": "InputControls",
+    "maps": [
+        {
+            "name": "Eyetracking",
+            "id": "198e39b8-87f1-49be-b690-a5b68965f2a8",
+            "actions": [
+                {
+                    "name": "MousePosition",
+                    "type": "Value",
+                    "id": "50c91680-521d-4b6d-a69c-8fd50665588c",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": ""
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "50ea8b34-b83e-4691-88d6-d8a07254d1a4",
+                    "path": "<Mouse>/position",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "MousePosition",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": []
+}

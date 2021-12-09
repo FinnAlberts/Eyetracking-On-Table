@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class Gaze : MonoBehaviour
+public class GazeManager : MonoBehaviour
 {
     /// <summary>
     /// The camera
@@ -20,13 +20,30 @@ public class Gaze : MonoBehaviour
     /// </summary>
     public UnityEvent<Vector2> onRaycastHit;
 
+    // Making GazeManager into an singleton
+    private static GazeManager _instance;
+
+    public static GazeManager Instance { get { return _instance; } }
+
+    private void Awake()
+    {
+        if (_instance != null && _instance != this)
+        {
+            Destroy(this.gameObject);
+        }
+        else
+        {
+            _instance = this;
+        }
+    }
+
     private void Update()
     {
         // Check for camera
         if (cam != null)
         {
             // Cast a ray
-            Ray ray = cam.ScreenPointToRay(Input.mousePosition);
+            Ray ray = cam.ScreenPointToRay(InputManager.Instance.mousePosition);
 
             // Initialize hit variable
             RaycastHit hit;
@@ -47,10 +64,10 @@ public class Gaze : MonoBehaviour
     private void OnDrawGizmos()
     {
         // Check for camera
-        if (cam != null)
-        {
+        if (cam != null && InputManager.Instance != null)
+        { 
             // Cast a ray
-            Ray ray = cam.ScreenPointToRay(Input.mousePosition);
+            Ray ray = cam.ScreenPointToRay(InputManager.Instance.mousePosition);
             Gizmos.color = Color.green;
             Gizmos.DrawRay(ray.origin, ray.direction * Mathf.Infinity);
 
