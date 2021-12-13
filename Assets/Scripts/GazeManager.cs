@@ -60,7 +60,7 @@ public class GazeManager : MonoBehaviour
     private void OnDrawGizmos()
     {
         // Check for camera
-        if (Camera.main != null && InputManager.Instance != null)
+        if (Camera.main != null)
         {
             // Cast a ray
             Gizmos.color = Color.green;
