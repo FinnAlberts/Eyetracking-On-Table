@@ -21,13 +21,16 @@ public class WebcamManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        // Webcam initialization
-        webcamRaw = new WebCamTexture(DetectorManager.Instance.resolution.x, DetectorManager.Instance.resolution.y, 60);
-        webcamBuffer = new RenderTexture(DetectorManager.Instance.resolution.x, DetectorManager.Instance.resolution.y, 0);
-        readBuffer = new Color32[DetectorManager.Instance.resolution.x * DetectorManager.Instance.resolution.y];
+        if (!DetectorManager.Instance.useFileVideo)
+        {
+            // Webcam initialization
+            webcamRaw = new WebCamTexture(DetectorManager.Instance.resolution.x, DetectorManager.Instance.resolution.y, 60);
+            webcamBuffer = new RenderTexture(DetectorManager.Instance.resolution.x, DetectorManager.Instance.resolution.y, 0);
+            readBuffer = new Color32[DetectorManager.Instance.resolution.x * DetectorManager.Instance.resolution.y];
 
-        webcamRaw.Play();
-        webcamPreview.texture = webcamBuffer;
+            webcamRaw.Play();
+            webcamPreview.texture = webcamBuffer;
+        }
     }
 
     // Update is called once per frame

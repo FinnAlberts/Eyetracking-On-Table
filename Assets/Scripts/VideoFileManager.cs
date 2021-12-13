@@ -21,6 +21,16 @@ public class VideoFileManager : MonoBehaviour
     /// </summary>
     public string videoURL;
 
+    /// <summary>
+    /// Speed at which the video should be played
+    /// </summary>
+    public float playSpeed;
+
+    /// <summary>
+    /// Event to be trigger every new frame with the new timestamp
+    /// </summary>
+    public UnityEvent<double> onNewTimestamp;
+
     // Called before the first frame
     void Start()
     {
@@ -34,7 +44,7 @@ public class VideoFileManager : MonoBehaviour
         videoFrame = new Texture2D(2, 2);
 
         // Will attach a video player to the main camera.
-        GameObject camera = GameObject.Find("Camera");
+        GameObject camera = Camera.main.gameObject;
 
         // Attach video player to camera
         videoPlayer = camera.AddComponent<UnityEngine.Video.VideoPlayer>();
@@ -45,6 +55,9 @@ public class VideoFileManager : MonoBehaviour
         // Set the video to play
         videoPlayer.url = videoURL;
 
+        // Set the playspeed of the video
+        videoPlayer.playbackSpeed = playSpeed;
+
         // Stop video on video end
         videoPlayer.loopPointReached += EndReached;
 
@@ -52,6 +65,9 @@ public class VideoFileManager : MonoBehaviour
         videoPlayer.sendFrameReadyEvents = true;
 
         videoPlayer.frameReady += OnNewFrame;
+
+        // Disable skipping of frames
+        videoPlayer.skipOnDrop = false;
 
         // Start video
         videoPlayer.Play();
@@ -65,6 +81,12 @@ public class VideoFileManager : MonoBehaviour
     // Called every new video frame
     void OnNewFrame(VideoPlayer _source, long _frameIdx)
     {
+        // Pause the video untill data is processed
+        _source.Pause();
+        
+        // Trigger onNewTimestamp event with current time
+        onNewTimestamp?.Invoke(_source.time);
+
         // Convert frame to Texture2D
         RenderTexture renderTexture = _source.texture as RenderTexture;
 
@@ -82,5 +104,13 @@ public class VideoFileManager : MonoBehaviour
 
         // Update the AprilTags
         DetectorManager.Instance.UpdateApriltags(videoFrame.GetPixels32());
+    }
+
+    /// <summary>
+    /// Resume playing the video
+    /// </summary>
+    public void ResumeVideo()
+    {
+        videoPlayer.Play();
     }
 }

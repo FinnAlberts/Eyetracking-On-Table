@@ -22,11 +22,6 @@ public class DetectorManager : MonoBehaviour
     public float tagSize = 0.05f;
     AprilTag.TagDetector detector;
 
-    /// <summary>
-    /// The camera
-    /// </summary>
-    public Camera cam;
-
     #region Make class into a singleton
     private static DetectorManager _instance;
 
@@ -69,7 +64,7 @@ public class DetectorManager : MonoBehaviour
     public void UpdateApriltags(Color32[] _frame)
     {
         // AprilTag detection
-        var fov = cam.fieldOfView * Mathf.Deg2Rad;
+        var fov = Camera.main.fieldOfView * Mathf.Deg2Rad;
         detector.ProcessImage(_frame, fov, tagSize);
 
         // Trigger event with list of currently detected Apriltags

@@ -167,6 +167,84 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &132886398
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 132886400}
+  - component: {fileID: 132886399}
+  m_Layer: 0
+  m_Name: EyetrackingDataProcessor
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &132886399
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 132886398}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c7c6b0ed30ef5fe4b8e33bd9dacfb466, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  GazeDataFile: C:/Users/Gebruiker/Downloads/20211206T145805Z\20211206T145805Z/gazedata
+  gazeDatas:
+    gazedata: []
+  gazePosition: {x: 0, y: 0}
+  onDataProcessingComplete:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1024568293}
+        m_TargetAssemblyTypeName: VideoFileManager, Assembly-CSharp
+        m_MethodName: ResumeVideo
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  canvas: {fileID: 922449633}
+  onGazePositionUpdated:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1398143380}
+        m_TargetAssemblyTypeName: GazeManager, Assembly-CSharp
+        m_MethodName: CalculateGaze
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!4 &132886400
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 132886398}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 15
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &389732205
 GameObject:
   m_ObjectHideFlags: 0
@@ -479,7 +557,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1024568295}
-  - component: {fileID: 1024568294}
   - component: {fileID: 1024568293}
   m_Layer: 0
   m_Name: VideoFileManager
@@ -500,42 +577,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fda99640d30cd204cab2939abc16139a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  videoURL: D:/Bestanden/OneDrive/Video's/WIN_20211209_11_36_13_Pro.mp4
---- !u!328 &1024568294
-VideoPlayer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1024568292}
-  m_Enabled: 1
-  m_VideoClip: {fileID: 0}
-  m_TargetCameraAlpha: 1
-  m_TargetCamera3DLayout: 0
-  m_TargetCamera: {fileID: 0}
-  m_TargetTexture: {fileID: 0}
-  m_TimeReference: 0
-  m_TargetMaterialRenderer: {fileID: 0}
-  m_TargetMaterialProperty: _MainTex
-  m_RenderMode: 2
-  m_AspectRatio: 2
-  m_DataSource: 0
-  m_PlaybackSpeed: 1
-  m_AudioOutputMode: 2
-  m_TargetAudioSources:
-  - {fileID: 0}
-  m_DirectAudioVolumes:
-  - 1
-  m_Url: 
-  m_EnabledAudioTracks: 01
-  m_DirectAudioMutes: 00
-  m_ControlledAudioTrackCount: 1
-  m_PlayOnAwake: 1
-  m_SkipOnDrop: 1
-  m_Looping: 0
-  m_WaitForFirstFrame: 1
-  m_FrameReadyEventEnabled: 0
-  m_VideoShaders: []
+  videoURL: D:/Bestanden/OneDrive/Video's/WIN_20211213_15_03_18_Pro.mp4
+  playSpeed: 10
+  onNewTimestamp:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 132886399}
+        m_TargetAssemblyTypeName: EyetrackingDataProcessor, Assembly-CSharp
+        m_MethodName: ProjectGaze2DUsingTime
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!4 &1024568295
 Transform:
   m_ObjectHideFlags: 0
@@ -707,7 +765,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e6bfa81d7f40eed4288959e901336b87, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cam: {fileID: 1629456830}
   layerMask:
     serializedVersion: 2
     m_Bits: 4294967295
@@ -769,7 +826,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6c541e87395ce1d4b89f346cef0cffe5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  useFileVideo: 0
+  useFileVideo: 1
   onDetectedApriltagsUpdated:
     m_PersistentCalls:
       m_Calls:
@@ -785,10 +842,9 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  resolution: {x: 1920, y: 1080}
-  decimation: 1
+  resolution: {x: 1280, y: 720}
+  decimation: 5
   tagSize: 0.0545
-  cam: {fileID: 1629456830}
 --- !u!4 &1521864577
 Transform:
   m_ObjectHideFlags: 0
@@ -845,7 +901,7 @@ GameObject:
   - component: {fileID: 1629456830}
   m_Layer: 0
   m_Name: Camera
-  m_TagString: Untagged
+  m_TagString: MainCamera
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1062,6 +1118,10 @@ PrefabInstance:
     - target: {fileID: 2897695632930535534, guid: d00a7e65122e269458d1eb382dd0f8b9, type: 3}
       propertyPath: m_Name
       value: Table
+      objectReference: {fileID: 0}
+    - target: {fileID: 2897695632930535534, guid: d00a7e65122e269458d1eb382dd0f8b9, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2897695632930535535, guid: d00a7e65122e269458d1eb382dd0f8b9, type: 3}
       propertyPath: rotationOffset.x

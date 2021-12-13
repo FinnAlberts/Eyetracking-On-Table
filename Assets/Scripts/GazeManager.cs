@@ -6,11 +6,6 @@ using UnityEngine.Events;
 public class GazeManager : MonoBehaviour
 {
     /// <summary>
-    /// The camera
-    /// </summary>
-    public Camera cam;
-
-    /// <summary>
     /// Layermask where ray will be drawn
     /// </summary>
     public LayerMask layerMask;
@@ -20,7 +15,7 @@ public class GazeManager : MonoBehaviour
     /// </summary>
     public UnityEvent<Vector2> onRaycastHit;
 
-    // Making GazeManager into an singleton
+    #region Making GazeManager into an singleton
     private static GazeManager _instance;
 
     public static GazeManager Instance { get { return _instance; } }
@@ -36,49 +31,49 @@ public class GazeManager : MonoBehaviour
             _instance = this;
         }
     }
+    #endregion
 
-    private void Update()
+    public Ray ray;
+
+    public void CalculateGaze(Vector2 _gazePosition)
     {
-        // Check for camera
-        if (cam != null)
+        // Calculate coordinates relative to camera
+        _gazePosition = new Vector2(_gazePosition.x * Camera.main.pixelWidth, _gazePosition.y * Camera.main.pixelHeight);
+
+        // Cast a ray
+        ray = Camera.main.ScreenPointToRay(_gazePosition);
+
+        // Initialize hit variable
+        RaycastHit hit;
+
+        // Check for hit
+        if (Physics.Raycast(ray, out hit, Mathf.Infinity, layerMask))
         {
-            // Cast a ray
-            Ray ray = cam.ScreenPointToRay(InputManager.Instance.mousePosition);
-
-            // Initialize hit variable
-            RaycastHit hit;
-
-            // Check for hit
-            if (Physics.Raycast(ray, out hit, Mathf.Infinity, layerMask))
-            {
-
-                // Calculate relative position and trigger event
-                Vector3 hitRelative = hit.transform.InverseTransformPoint(hit.point);
-                onRaycastHit?.Invoke(new Vector2(hitRelative.x, hitRelative.z));
-                Debug.Log(hitRelative);
-            }
+            // Calculate relative position and trigger event
+            Vector3 hitRelative = hit.transform.InverseTransformPoint(hit.point);
+            onRaycastHit?.Invoke(new Vector2(hitRelative.x, hitRelative.z));
         }
+        
     }
 
     // Drawing of Gizmos
     private void OnDrawGizmos()
     {
         // Check for camera
-        if (cam != null && InputManager.Instance != null)
-        { 
+        if (Camera.main != null && InputManager.Instance != null)
+        {
             // Cast a ray
-            Ray ray = cam.ScreenPointToRay(InputManager.Instance.mousePosition);
             Gizmos.color = Color.green;
-            Gizmos.DrawRay(ray.origin, ray.direction * Mathf.Infinity);
+            Gizmos.DrawRay(ray.origin, ray.direction * 1000);
 
             // Initialize hit variable
             RaycastHit hit;
 
             // Check for hit
-            if (Physics.Raycast(ray, out hit, Mathf.Infinity, layerMask))
+            if (Physics.Raycast(ray, out hit, 1000, layerMask))
             {
                 // Visualize hit
-                Gizmos.DrawSphere(hit.point, 0.005f);
+                Gizmos.DrawSphere(hit.point, .005f);
             }
         }
     }
