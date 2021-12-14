@@ -165,7 +165,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &132886398
 GameObject:
@@ -196,10 +196,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c7c6b0ed30ef5fe4b8e33bd9dacfb466, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GazeDataFile: C:/Users/Gebruiker/Downloads/20211206T145805Z\20211206T145805Z/gazedata
-  gazeDatas:
-    gazedata: []
-  gazePosition: {x: 0, y: 0}
   onDataProcessingComplete:
     m_PersistentCalls:
       m_Calls:
@@ -215,13 +211,12 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  canvas: {fileID: 922449633}
   onGazePositionUpdated:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1398143380}
         m_TargetAssemblyTypeName: GazeManager, Assembly-CSharp
-        m_MethodName: CalculateGaze
+        m_MethodName: CalculateGazeHit
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -231,6 +226,10 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  GazeDataFile: C:/Users/Gebruiker/Downloads/20211206T145805Z\20211206T145805Z/gazedata
+  gazeDatas:
+    gazedata: []
+  gazePosition: {x: 0, y: 0}
 --- !u!4 &132886400
 Transform:
   m_ObjectHideFlags: 0
@@ -243,7 +242,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 8
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &389732205
 GameObject:
@@ -273,7 +272,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &922449630
 GameObject:
@@ -368,7 +367,7 @@ RectTransform:
   m_Children:
   - {fileID: 1084459709}
   m_Father: {fileID: 0}
-  m_RootOrder: 12
+  m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -404,14 +403,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fda99640d30cd204cab2939abc16139a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  videoURL: D:/Bestanden/OneDrive/Video's/WIN_20211213_15_03_18_Pro.mp4
-  playSpeed: 10
   onNewTimestamp:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 132886399}
-        m_TargetAssemblyTypeName: EyetrackingDataProcessor, Assembly-CSharp
-        m_MethodName: ProjectGaze2DUsingTime
+        m_TargetAssemblyTypeName: EyetrackingFileProcessor, Assembly-CSharp
+        m_MethodName: SearchGazePositionAtTimestamp
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -421,6 +418,8 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  videoURL: D:/Bestanden/OneDrive/Video's/WIN_20211213_15_03_18_Pro.mp4
+  playSpeed: 1
 --- !u!4 &1024568295
 Transform:
   m_ObjectHideFlags: 0
@@ -592,9 +591,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e6bfa81d7f40eed4288959e901336b87, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  layerMask:
-    serializedVersion: 2
-    m_Bits: 4294967295
   onRaycastHit:
     m_PersistentCalls:
       m_Calls:
@@ -610,6 +606,9 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  layerMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
 --- !u!4 &1398143381
 Transform:
   m_ObjectHideFlags: 0
@@ -622,7 +621,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1521864575
 GameObject:
@@ -653,7 +652,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6c541e87395ce1d4b89f346cef0cffe5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  useFileVideo: 1
   onDetectedApriltagsUpdated:
     m_PersistentCalls:
       m_Calls:
@@ -669,6 +667,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  useFileVideo: 1
   resolution: {x: 1280, y: 720}
   decimation: 5
   tagSize: 0.0545
@@ -696,7 +695,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1526989261}
   m_Layer: 0
-  m_Name: --- AprilTag Detection ---
+  m_Name: --- Managers ---
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -881,7 +880,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 11
+  m_RootOrder: 12
   m_LocalEulerAnglesHint: {x: 50, y: 0, z: 0}
 --- !u!1001 &2897695633321533396
 PrefabInstance:
@@ -1113,6 +1112,54 @@ PrefabInstance:
     - target: {fileID: 2897695632930535535, guid: d00a7e65122e269458d1eb382dd0f8b9, type: 3}
       propertyPath: digitalApriltags.Array.data[7].Color.r
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2897695632930535535, guid: d00a7e65122e269458d1eb382dd0f8b9, type: 3}
+      propertyPath: digitalApriltags.Array.data[0].Offset.x
+      value: -3.53
+      objectReference: {fileID: 0}
+    - target: {fileID: 2897695632930535535, guid: d00a7e65122e269458d1eb382dd0f8b9, type: 3}
+      propertyPath: digitalApriltags.Array.data[0].Offset.z
+      value: 3.95
+      objectReference: {fileID: 0}
+    - target: {fileID: 2897695632930535535, guid: d00a7e65122e269458d1eb382dd0f8b9, type: 3}
+      propertyPath: digitalApriltags.Array.data[1].Offset.z
+      value: 3.95
+      objectReference: {fileID: 0}
+    - target: {fileID: 2897695632930535535, guid: d00a7e65122e269458d1eb382dd0f8b9, type: 3}
+      propertyPath: digitalApriltags.Array.data[2].Offset.x
+      value: 3.53
+      objectReference: {fileID: 0}
+    - target: {fileID: 2897695632930535535, guid: d00a7e65122e269458d1eb382dd0f8b9, type: 3}
+      propertyPath: digitalApriltags.Array.data[2].Offset.z
+      value: 3.95
+      objectReference: {fileID: 0}
+    - target: {fileID: 2897695632930535535, guid: d00a7e65122e269458d1eb382dd0f8b9, type: 3}
+      propertyPath: digitalApriltags.Array.data[3].Offset.x
+      value: 3.53
+      objectReference: {fileID: 0}
+    - target: {fileID: 2897695632930535535, guid: d00a7e65122e269458d1eb382dd0f8b9, type: 3}
+      propertyPath: digitalApriltags.Array.data[4].Offset.x
+      value: 3.53
+      objectReference: {fileID: 0}
+    - target: {fileID: 2897695632930535535, guid: d00a7e65122e269458d1eb382dd0f8b9, type: 3}
+      propertyPath: digitalApriltags.Array.data[4].Offset.z
+      value: -3.95
+      objectReference: {fileID: 0}
+    - target: {fileID: 2897695632930535535, guid: d00a7e65122e269458d1eb382dd0f8b9, type: 3}
+      propertyPath: digitalApriltags.Array.data[5].Offset.z
+      value: -3.95
+      objectReference: {fileID: 0}
+    - target: {fileID: 2897695632930535535, guid: d00a7e65122e269458d1eb382dd0f8b9, type: 3}
+      propertyPath: digitalApriltags.Array.data[6].Offset.x
+      value: -3.53
+      objectReference: {fileID: 0}
+    - target: {fileID: 2897695632930535535, guid: d00a7e65122e269458d1eb382dd0f8b9, type: 3}
+      propertyPath: digitalApriltags.Array.data[6].Offset.z
+      value: -3.95
+      objectReference: {fileID: 0}
+    - target: {fileID: 2897695632930535535, guid: d00a7e65122e269458d1eb382dd0f8b9, type: 3}
+      propertyPath: digitalApriltags.Array.data[7].Offset.x
+      value: -3.53
       objectReference: {fileID: 0}
     - target: {fileID: 2897695632930535535, guid: d00a7e65122e269458d1eb382dd0f8b9, type: 3}
       propertyPath: digitalApriltags.Array.data[0].Position.x

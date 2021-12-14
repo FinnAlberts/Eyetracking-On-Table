@@ -4,39 +4,39 @@ using System.IO;
 using UnityEngine;
 using UnityEngine.Events;
 
+/// <summary>
+/// File processor for the eyetracking data file by converting the JSON into an object
+/// </summary>
 public class EyetrackingFileProcessor : MonoBehaviour
 {
-    /// <summary>
-    /// The JSON-file with the gaze data
-    /// </summary>
-    public string GazeDataFile;
-
-    /// <summary>
-    /// List of the gaze datas
-    /// </summary>
-    public GazeDatas gazeDatas;
-
-    /// <summary>
-    /// The current position of the gaze
-    /// </summary>
-    public Vector2 gazePosition;
-
     /// <summary>
     /// Event which is trigger when the data for 1 frame is processed
     /// </summary>
     public UnityEvent onDataProcessingComplete;
 
     /// <summary>
-    /// The canvas (used for scaling)
-    /// </summary>
-    public Canvas canvas;
-
-    /// <summary>
     /// Event which is triggered when the gaze position is updated
     /// </summary>
     public UnityEvent<Vector2> onGazePositionUpdated;
 
-    // Start is called before the first frame update
+    /// <summary>
+    /// The JSON-file with the gaze data
+    /// </summary>
+    [SerializeField] string GazeDataFile;
+
+    /// <summary>
+    /// List of the gaze datas
+    /// </summary>
+    [SerializeField] GazeDatas gazeDatas;
+
+    /// <summary>
+    /// The current position of the gaze
+    /// </summary>
+    [SerializeField] Vector2 gazePosition;
+
+    /// <summary>
+    /// Start is called before the first frame update
+    /// </summary>
     void Start()
     {
         // Prepare file to be JSON-processed (the file is not completely correct JSON)
@@ -60,10 +60,10 @@ public class EyetrackingFileProcessor : MonoBehaviour
     }
 
     /// <summary>
-    /// Set the gaze position in the global variable using the according timestamp
+    /// Search the gaze position using a timestamp and set it in the global variable 
     /// </summary>
     /// <param name="_timestamp">The timestamp at which the gaze needs to be determined and set</param>
-    public void ProjectGaze2DUsingTime(double _timestamp)
+    public void SearchGazePositionAtTimestamp(double _timestamp)
     {
         // Find nearest gaze data
         Gazedata gazeData = GetNearestGazedata(_timestamp);
@@ -118,13 +118,17 @@ public class EyetrackingFileProcessor : MonoBehaviour
         return previousGazeData;
     }
 
+    /// <summary>
+    /// Drawing of gizmos
+    /// </summary>
     private void OnDrawGizmos()
     {
-        // Drawing of the gaze position
-        if (gazePosition != null && DetectorManager.Instance != null)
+        // Check if there's a gaze position that can be drawn and if there is a camera
+        if (gazePosition != null && Camera.main != null)
         {
-            Gizmos.color = Color.red;
             // Draw a red sphere at gaze position. To do this, the gaze position coordinates (which are in 2D and have (0, 0) in the top left corner) are converted to their respective coordinates in world space (which are in 3D and have (0, 0) in the center) using the camera dimensions and canvas scale.
+            Gizmos.color = Color.red;
+            GameObject canvas = Object.FindObjectOfType<Canvas>().gameObject;
             Gizmos.DrawSphere(new Vector3((gazePosition.x * Camera.main.pixelWidth - Camera.main.pixelWidth / 2) * canvas.transform.localScale.x, (gazePosition.y * Camera.main.pixelHeight - Camera.main.pixelHeight / 2) * canvas.transform.localScale.y, 1000), 15);
         }
     }

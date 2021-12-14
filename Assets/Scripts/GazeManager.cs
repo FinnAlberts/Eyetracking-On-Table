@@ -3,19 +3,27 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
+/// <summary>
+/// Calculate hit of the gaze on the table using RayCasting
+/// </summary>
 public class GazeManager : MonoBehaviour
 {
-    /// <summary>
-    /// Layermask where ray will be drawn
-    /// </summary>
-    public LayerMask layerMask;
-
     /// <summary>
     /// Event for when the raycast hits (which happens when looking at the table)
     /// </summary>
     public UnityEvent<Vector2> onRaycastHit;
 
-    #region Making GazeManager into an singleton
+    /// <summary>
+    /// Layermask where ray will be drawn
+    /// </summary>
+    [SerializeField] LayerMask layerMask;
+
+    /// <summary>
+    /// The ray for the gaze direction
+    /// </summary>
+    private Ray ray;
+
+    #region Making GazeManager into a singleton
     private static GazeManager _instance;
 
     public static GazeManager Instance { get { return _instance; } }
@@ -33,9 +41,11 @@ public class GazeManager : MonoBehaviour
     }
     #endregion
 
-    public Ray ray;
-
-    public void CalculateGaze(Vector2 _gazePosition)
+    /// <summary>
+    /// Calculate the gaze and the hit on the table
+    /// </summary>
+    /// <param name="_gazePosition">The position of the gaze in values between 0 and 1</param>
+    public void CalculateGazeHit(Vector2 _gazePosition)
     {
         // Calculate coordinates relative to camera
         _gazePosition = new Vector2(_gazePosition.x * Camera.main.pixelWidth, _gazePosition.y * Camera.main.pixelHeight);
@@ -43,11 +53,8 @@ public class GazeManager : MonoBehaviour
         // Cast a ray
         ray = Camera.main.ScreenPointToRay(_gazePosition);
 
-        // Initialize hit variable
-        RaycastHit hit;
-
         // Check for hit
-        if (Physics.Raycast(ray, out hit, Mathf.Infinity, layerMask))
+        if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, layerMask))
         {
             // Calculate relative position and trigger event
             Vector3 hitRelative = hit.transform.InverseTransformPoint(hit.point);
@@ -56,7 +63,9 @@ public class GazeManager : MonoBehaviour
         
     }
 
-    // Drawing of Gizmos
+    /// <summary>
+    /// Drawing of gizmos
+    /// </summary>
     private void OnDrawGizmos()
     {
         // Check for camera
@@ -66,11 +75,8 @@ public class GazeManager : MonoBehaviour
             Gizmos.color = Color.green;
             Gizmos.DrawRay(ray.origin, ray.direction * 1000);
 
-            // Initialize hit variable
-            RaycastHit hit;
-
             // Check for hit
-            if (Physics.Raycast(ray, out hit, 1000, layerMask))
+            if (Physics.Raycast(ray, out RaycastHit hit, 1000, layerMask))
             {
                 // Visualize hit
                 Gizmos.DrawSphere(hit.point, .005f);

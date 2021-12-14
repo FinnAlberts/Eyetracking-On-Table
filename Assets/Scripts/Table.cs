@@ -3,22 +3,20 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
+/// <summary>
+/// Rotate and position the table using detected Apriltags
+/// </summary>
 public class Table : MonoBehaviour
 {
     /// <summary>
     /// List of all digital Apriltags
     /// </summary>
-    public List<DigitalApriltag> digitalApriltags;
-
-    /// <summary>
-    /// Rotation offset when comparing Apriltag and table rotation
-    /// </summary>
-    public Vector3 rotationOffset;
+    [SerializeField] List<DigitalApriltag> digitalApriltags;
 
     /// <summary>
     /// Scale for the table. Lower numbers make the table appear close (thus larger).
     /// </summary>
-    public float scaleCalibration = 50f;
+    [SerializeField] float scaleCalibration = 50f;
 
     /// <summary>
     /// List of physical Apriltags
@@ -35,14 +33,10 @@ public class Table : MonoBehaviour
     /// </summary>
     private Vector3 forwardDirectionLerped = Vector3.zero;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        // Initialize detector
-        AprilTag.TagDetector detector = new AprilTag.TagDetector(1920, 1080);
-    }
-
-    // Runs every time the detected Apriltags are updated
+    /// <summary>
+    /// Update the position and orientation of the table using the detected Apriltags
+    /// </summary>
+    /// <param name="_apriltags">The detected Apriltags</param>
     public void UpdateTable(List<AprilTag.TagPose> _apriltags)
     {
         // Set detected tags in global list
@@ -98,9 +92,9 @@ public class Table : MonoBehaviour
         Vector3 absolutePosition = transform.position;
 
         // Calculate relative position
-        absolutePosition += transform.right * _vector3.x * transform.localScale.x;
-        absolutePosition += transform.up * _vector3.y * transform.localScale.y;
-        absolutePosition += transform.forward * _vector3.z * transform.localScale.z;
+        absolutePosition += _vector3.x * transform.localScale.x * transform.right;
+        absolutePosition += _vector3.y * transform.localScale.y * transform.up;
+        absolutePosition += _vector3.z * transform.localScale.z * transform.forward;
 
         // Return new vector
         return absolutePosition;
@@ -116,19 +110,19 @@ public class Table : MonoBehaviour
     {
         // Create new Vector3 for position and offset
         Vector3 position = _apriltag.Position * scaleCalibration;
-        Vector3 offset = _digitalApriltag.Position;
+        Vector3 offset = _digitalApriltag.Offset;
 
         // Calculate origin
-        position -= transform.right * offset.x * transform.localScale.x;
-        position -= transform.up * offset.y * transform.localScale.y;
-        position -= transform.forward * offset.z * transform.localScale.z;
+        position -= offset.x * transform.localScale.x * transform.right;
+        position -= offset.y * transform.localScale.y * transform.up;
+        position -= offset.z * transform.localScale.z * transform.forward;
 
         // Return origin
         return position;
     }
 
     /// <summary>
-    /// Set the rotation of the table based on positions of Apriltags, or if not enough tags have been detected, the rotation of tha detected Apriltags themselves
+    /// Set the rotation of the table based on positions of Apriltags, or if not enough tags have been detected, the rotation of the detected Apriltags themselves. This is not used. Calculating rotation using SetRotationUsingTagRotation() is more accurate.
     /// </summary>
     void SetRotation()
     {
@@ -138,10 +132,9 @@ public class Table : MonoBehaviour
             return;
         }
         
-        // Check if list has at least 3 tags
+        // Check if list has at least 3 tags (minimum for determine rotation)
         if (apriltags.Count < 3)
         {
-            Debug.Log("Not enough visible tags to determine rotation");
             SetRotationUsingTagRotation();
             return;
         }
@@ -154,30 +147,29 @@ public class Table : MonoBehaviour
         List<DigitalApriltag> candidates = new List<DigitalApriltag>();
 
         // Find most upper left digital Apriltag, where up is more important than left
-        candidates = foundDigitalApriltags.Where(d => d.Position.z == foundDigitalApriltags.Max(a => a.Position.z)).ToList();
-        DigitalApriltag upperLeftDigital = candidates.Where(d => d.Position.x == candidates.Min(a => a.Position.x)).FirstOrDefault();
+        candidates = foundDigitalApriltags.Where(d => d.Offset.z == foundDigitalApriltags.Max(a => a.Offset.z)).ToList();
+        DigitalApriltag upperLeftDigital = candidates.Where(d => d.Offset.x == candidates.Min(a => a.Offset.x)).FirstOrDefault();
 
         // Remove the found digital Apriltag from the list
         foundDigitalApriltags.Remove(upperLeftDigital);
 
         // Find most upper right digital Apriltag, where right is more important than up
-        candidates = foundDigitalApriltags.Where(d => d.Position.x == foundDigitalApriltags.Max(a => a.Position.x)).ToList();
-        DigitalApriltag upperRightDigital = candidates.Where(d => d.Position.z == candidates.Max(a => a.Position.z)).FirstOrDefault();
+        candidates = foundDigitalApriltags.Where(d => d.Offset.x == foundDigitalApriltags.Max(a => a.Offset.x)).ToList();
+        DigitalApriltag upperRightDigital = candidates.Where(d => d.Offset.z == candidates.Max(a => a.Offset.z)).FirstOrDefault();
 
         // Remove the found digital Apriltag from the list
         foundDigitalApriltags.Remove(upperRightDigital);
 
         // Find most lower left digital Apriltag, where left is more important than down.
-        candidates = foundDigitalApriltags.Where(d => d.Position.z == foundDigitalApriltags.Min(a => a.Position.z)).ToList();
-        DigitalApriltag lowerLeftDigital = candidates.Where(d => d.Position.x == candidates.Min(a => a.Position.x)).FirstOrDefault();
+        candidates = foundDigitalApriltags.Where(d => d.Offset.z == foundDigitalApriltags.Min(a => a.Offset.z)).ToList();
+        DigitalApriltag lowerLeftDigital = candidates.Where(d => d.Offset.x == candidates.Min(a => a.Offset.x)).FirstOrDefault();
         #endregion
 
-        // Check if Apriltags are on a straight line, in that case, complete rotation cannot be determined
+        // Check if Apriltags are on a straight line, in that case, complete rotation cannot be determined using positions
         if (
-            (upperLeftDigital.Position.x == upperRightDigital.Position.x) && (upperLeftDigital.Position.x == lowerLeftDigital.Position.x) ||
-            (upperLeftDigital.Position.z == upperRightDigital.Position.z) && (upperLeftDigital.Position.z == lowerLeftDigital.Position.z))
+            (upperLeftDigital.Offset.x == upperRightDigital.Offset.x) && (upperLeftDigital.Offset.x == lowerLeftDigital.Offset.x) ||
+            (upperLeftDigital.Offset.z == upperRightDigital.Offset.z) && (upperLeftDigital.Offset.z == lowerLeftDigital.Offset.z))
         {
-            Debug.Log("Tags are on a single line");
             SetRotationUsingTagRotation();
             return;
         }
@@ -197,8 +189,8 @@ public class Table : MonoBehaviour
         transform.up = normal;
 
         // Calculate offset angle 
-        Vector2 upperLeftLocal = new Vector2(upperLeftDigital.Position.x * transform.localScale.x, upperLeftDigital.Position.z * transform.localScale.z);
-        Vector2 lowerLeftLocal = new Vector2(lowerLeftDigital.Position.x * transform.localScale.x, lowerLeftDigital.Position.z * transform.localScale.z);
+        Vector2 upperLeftLocal = new Vector2(upperLeftDigital.Offset.x * transform.localScale.x, upperLeftDigital.Offset.z * transform.localScale.z);
+        Vector2 lowerLeftLocal = new Vector2(lowerLeftDigital.Offset.x * transform.localScale.x, lowerLeftDigital.Offset.z * transform.localScale.z);
 
         float offsetAngle = GetAngle(upperLeftLocal, lowerLeftLocal, Vector2.down, -Vector2.right);
 
@@ -232,8 +224,7 @@ public class Table : MonoBehaviour
             Vector3 upwardDirection = apriltag.Rotation * Vector3.back;
             Vector3 forwardDirection = apriltag.Rotation * Vector3.up;
 
-            // To correct for flickering, because the detector sometimes thinks the Apriltag is upside down, check if an Apriltag is facing down and if so, flip it around.
-            // This will not cause issues, because the user will not look at the table upside down, so an Apriltag is always supposed to be looking up.
+            // To correct for flickering, because the detector sometimes incorrectly thinks the Apriltag is upside down, check if an Apriltag is incorrectly facing down or forward (by looking at upwards and backwards direction) and if so, flip it around.
             if (Vector3.Dot(Vector3.up, upwardDirection) < 0)
             {
                 upwardDirection = -upwardDirection;
@@ -260,7 +251,7 @@ public class Table : MonoBehaviour
         upwardDirectionLerped = Vector3.Lerp(upwardDirectionLerped, averageUpwardDirection, Time.deltaTime * 10);
 
         // Set the rotation while applying the set offset
-        transform.rotation = Quaternion.LookRotation(forwardDirectionLerped, upwardDirectionLerped) * Quaternion.Euler(rotationOffset);
+        transform.rotation = Quaternion.LookRotation(forwardDirectionLerped, upwardDirectionLerped);
     }
 
     /// <summary>
@@ -302,14 +293,16 @@ public class Table : MonoBehaviour
         return angle;
     }
 
-    // Drawing of Gizmos
+    /// <summary>
+    /// Drawing of Gizmos
+    /// </summary>
     void OnDrawGizmos()
     {
         // Draw points of digital Apriltags
         foreach (DigitalApriltag digitalApriltag in digitalApriltags)
         {
             Gizmos.color = digitalApriltag.Color;
-            Gizmos.DrawSphere(GetAbsolutePosition(digitalApriltag.Position), 0.005f);
+            Gizmos.DrawSphere(GetAbsolutePosition(digitalApriltag.Offset), 0.005f);
         }
 
         // Draw rays from Apriltags
@@ -319,8 +312,7 @@ public class Table : MonoBehaviour
             Vector3 upwardDirection = apriltag.Rotation * Vector3.back;
             Vector3 forwardDirection = apriltag.Rotation * Vector3.up;
 
-            // To correct for flickering, because the detector sometimes thinks the Apriltag is upside down, check if an Apriltag is facing down and if so, flip it around.
-            // This will not cause issues, because the user will not look at the table upside down, so an Apriltag is always supposed to be looking up.
+            // To correct for flickering, because the detector sometimes incorrectly thinks the Apriltag is upside down, check if an Apriltag is incorrectly facing down or forward (by looking at upwards and backwards direction) and if so, flip it around.
             if (Vector3.Dot(Vector3.up, upwardDirection) < 0)
             {
                 upwardDirection = -upwardDirection;
@@ -332,9 +324,9 @@ public class Table : MonoBehaviour
             }
 
             // Draw rotation of Apriltags
-            Gizmos.color = Color.white;
+            Gizmos.color = Color.red;
             Gizmos.DrawRay(apriltag.Position, upwardDirection);
-            Gizmos.color = Color.magenta;
+            Gizmos.color = Color.blue;
             Gizmos.DrawRay(apriltag.Position, forwardDirection);
         }
     }

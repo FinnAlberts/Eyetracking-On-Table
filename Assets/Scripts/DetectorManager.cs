@@ -4,23 +4,41 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.Events;
 
+/// <summary>
+/// Detect Apriltags in a given frame
+/// </summary>
 public class DetectorManager : MonoBehaviour
 {
+    /// <summary>
+    /// Event for when detected Apriltags have been updated
+    /// </summary>
+    public UnityEvent<List<AprilTag.TagPose>> onDetectedApriltagsUpdated;
+
     /// <summary>
     /// Choose if webcam or a set video file (in video player) should be used
     /// </summary>
     public bool useFileVideo = false;
 
     /// <summary>
-    /// Event for when detected Apriltags have been updated
+    /// Resolution of input file (can be video or webcam)
     /// </summary>
-    public UnityEvent<List<AprilTag.TagPose>> onDetectedApriltagsUpdated;
+    // TODO: Automatically detect resolution
+    public Vector2Int resolution = new Vector2Int(1920, 1080); 
 
-    // AprilTag variables
-    public Vector2Int resolution = new Vector2Int(1920, 1080);
-    public int decimation = 1;
-    public float tagSize = 0.05f;
-    AprilTag.TagDetector detector;
+    /// <summary>
+    /// Decimation for Apriltag processing. When using higher values, accuracy may drop, but preformance will increase
+    /// </summary>
+    [SerializeField] int decimation = 1;
+
+    /// <summary>
+    /// Size of the Apriltags in meters
+    /// </summary>
+    [SerializeField] float tagSize = 0.05f;
+
+    /// <summary>
+    /// The Apriltag detector
+    /// </summary>
+    private AprilTag.TagDetector detector;
 
     #region Make class into a singleton
     private static DetectorManager _instance;
@@ -40,27 +58,31 @@ public class DetectorManager : MonoBehaviour
     }
     #endregion
 
-    // Called before first frame
+    /// <summary>
+    /// Called before the first frame update
+    /// </summary>
     private void Start()
     {
         // Detector initialization
         detector = new AprilTag.TagDetector(resolution.x, resolution.y, decimation);
 
-        // Enable/disable webcam preview
+        // Switch between video file and webcam
         if (useFileVideo)
         {
-            GameObject.Find("Canvas").SetActive(false);
+            Object.FindObjectOfType<WebcamManager>().gameObject.SetActive(false);
+            Object.FindObjectOfType<VideoFileManager>().gameObject.SetActive(true);
         }
         else
         {
-            GameObject.Find("Canvas").SetActive(true);
+            Object.FindObjectOfType<WebcamManager>().gameObject.SetActive(true);
+            Object.FindObjectOfType<VideoFileManager>().gameObject.SetActive(false);
         }
     }
 
     /// <summary>
-    /// Updates the found AprilTags using a given frame
+    /// Updates the found Apriltags using a given frame
     /// </summary>
-    /// <param name="_frame">The frame to detect the AprilTags in</param>
+    /// <param name="_frame">The frame to detect the Apriltags in</param>
     public void UpdateApriltags(Color32[] _frame)
     {
         // AprilTag detection
@@ -72,6 +94,9 @@ public class DetectorManager : MonoBehaviour
         onDetectedApriltagsUpdated?.Invoke(apriltags);
     }
 
+    /// <summary>
+    /// Called on destroy
+    /// </summary>
     void OnDestroy()
     {
         detector.Dispose();

@@ -13,7 +13,7 @@ public class DigitalApriltag
     /// <summary>
     /// Position of Apriltag relative to center of table
     /// </summary>
-    public Vector3 Position;
+    public Vector3 Offset;
 
     /// <summary>
     /// Color of the Apriltag
