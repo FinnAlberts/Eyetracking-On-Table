@@ -6,6 +6,18 @@ using UnityEngine;
 public class DigitalApriltag
 {
     /// <summary>
+    /// Constructor for digital Apriltag
+    /// </summary>
+    /// <param name="_ID">Apriltag ID</param>
+    /// <param name="_offset">Offset of Apriltag</param>
+    public DigitalApriltag(int _ID, Vector3 _offset)
+    {
+        ID = _ID;
+        Offset = _offset;
+        Color = Color.red;
+    }
+
+    /// <summary>
     /// The ID of the Apriltag
     /// </summary>
     public int ID;

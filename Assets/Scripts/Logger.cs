@@ -22,7 +22,7 @@ public class Logger : MonoBehaviour
     {
         // Format string including DateTime
         DateTime dateTime = DateTime.Now;
-        string location = (Mathf.Round(_vector2.x * 100) / 100).ToString() + " " + (Mathf.Round(_vector2.y * 100) / 100).ToString();
+        string location = _vector2.x.ToString() + " " + _vector2.y.ToString();
         string text = String.Format("[{0}] {1}\n", "", location);
 
         // Add text to file

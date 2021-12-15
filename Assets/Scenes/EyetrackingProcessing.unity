@@ -226,7 +226,8 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  GazeDataFile: C:/Users/Gebruiker/Downloads/20211206T145805Z\20211206T145805Z/gazedata
+  GazeDataFile: C:/Users/finna/OneDrive - ZuydHogeschool/Jaar 2/Stage/Eyetracking
+    data/20211206T145805Z/20211206T145805Z/gazedata
   gazeDatas:
     gazedata: []
   gazePosition: {x: 0, y: 0}
@@ -419,7 +420,7 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
   videoURL: D:/Bestanden/OneDrive/Video's/WIN_20211213_15_03_18_Pro.mp4
-  playSpeed: 1
+  playSpeed: 100
 --- !u!4 &1024568295
 Transform:
   m_ObjectHideFlags: 0

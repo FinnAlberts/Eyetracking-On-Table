@@ -70,6 +70,9 @@ public class VideoFileManager : MonoBehaviour
         // Disable skipping of frames
         videoPlayer.skipOnDrop = false;
 
+        // Prepare video player
+        videoPlayer.Prepare();
+
         // Start video
         videoPlayer.Play();
     }
@@ -77,7 +80,7 @@ public class VideoFileManager : MonoBehaviour
     /// <summary>
     /// Called on end of video
     /// </summary>
-    /// <param name="videoPlayer"></param>
+    /// <param name="videoPlayer">The video player</param>
     void EndReached(UnityEngine.Video.VideoPlayer videoPlayer)
     {
         videoPlayer.Stop();
@@ -91,6 +94,7 @@ public class VideoFileManager : MonoBehaviour
     /// <param name="_frameIdx">The index of the current frame</param>
     void OnNewFrame(VideoPlayer _source, long _frameIdx)
     {
+        
         // Pause the video untill data is processed
         _source.Pause();
         
