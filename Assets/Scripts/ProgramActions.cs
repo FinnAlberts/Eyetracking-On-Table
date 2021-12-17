@@ -16,12 +16,4 @@ public class ProgramActions : MonoBehaviour
             Application.Quit();
         #endif
     }
-
-    // TODO: Remove this
-    public void GoToEyetracking()
-    {
-
-
-        SceneHandler.Instance.loadEyetrackingProcessorScene();
-    }
 }

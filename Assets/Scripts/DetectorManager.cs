@@ -63,20 +63,33 @@ public class DetectorManager : MonoBehaviour
     /// </summary>
     private void Start()
     {
-        // Detector initialization
-        detector = new AprilTag.TagDetector(resolution.x, resolution.y, decimation);
+        // Load configuration
+        if (ConfigurationManager.Instance != null)
+        {
+            tagSize = ConfigurationManager.Instance.tagSize;
+            decimation = ConfigurationManager.Instance.decimation;
+        }
 
         // Switch between video file and webcam
         if (useFileVideo)
         {
-            Object.FindObjectOfType<WebcamManager>().gameObject.SetActive(false);
-            Object.FindObjectOfType<VideoFileManager>().gameObject.SetActive(true);
+            Object.FindObjectOfType<WebcamHandler>().gameObject.SetActive(false);
+            Object.FindObjectOfType<VideoFileHandler>().gameObject.SetActive(true);
         }
         else
         {
-            Object.FindObjectOfType<WebcamManager>().gameObject.SetActive(true);
-            Object.FindObjectOfType<VideoFileManager>().gameObject.SetActive(false);
+            Object.FindObjectOfType<WebcamHandler>().gameObject.SetActive(true);
+            Object.FindObjectOfType<VideoFileHandler>().gameObject.SetActive(false);
         }
+    }
+
+    /// <summary>
+    /// Initialize the Apriltag detector using the values set in the global variables
+    /// </summary>
+    public void Initialize()
+    {
+        // Detector initialization
+        detector = new AprilTag.TagDetector(resolution.x, resolution.y, decimation);
     }
 
     /// <summary>
@@ -85,6 +98,12 @@ public class DetectorManager : MonoBehaviour
     /// <param name="_frame">The frame to detect the Apriltags in</param>
     public void UpdateApriltags(Color32[] _frame)
     {
+        // Check if detector has been initialized
+        if (detector == null)
+        {
+            Debug.LogError("The Apriltag detector has not yet been initialized.");
+        }        
+        
         // AprilTag detection
         var fov = Camera.main.fieldOfView * Mathf.Deg2Rad;
         detector.ProcessImage(_frame, fov, tagSize);

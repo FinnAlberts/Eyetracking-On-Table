@@ -134,7 +134,7 @@ GameObject:
   - component: {fileID: 88521442}
   - component: {fileID: 88521441}
   m_Layer: 0
-  m_Name: Logger
+  m_Name: LogHandler
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -178,7 +178,7 @@ GameObject:
   - component: {fileID: 132886400}
   - component: {fileID: 132886399}
   m_Layer: 0
-  m_Name: EyetrackingFileManager
+  m_Name: EyetrackingFileHandler
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -196,21 +196,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c7c6b0ed30ef5fe4b8e33bd9dacfb466, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  onDataProcessingComplete:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1024568293}
-        m_TargetAssemblyTypeName: VideoFileManager, Assembly-CSharp
-        m_MethodName: ResumeVideo
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
   onGazePositionUpdated:
     m_PersistentCalls:
       m_Calls:
@@ -226,7 +211,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  GazeDataFile: C:/Users/finna/OneDrive - ZuydHogeschool/Jaar 2/Stage/Eyetracking
+  gazeDataFile: C:/Users/Gebruiker/OneDrive - ZuydHogeschool/Jaar 2/Stage/Eyetracking
     data/20211206T145805Z/20211206T145805Z/gazedata
   gazeDatas:
     gazedata: []
@@ -243,7 +228,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &389732205
 GameObject:
@@ -255,7 +240,7 @@ GameObject:
   m_Component:
   - component: {fileID: 389732206}
   m_Layer: 0
-  m_Name: --- Functionalities ---
+  m_Name: --- Handlers ---
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -273,7 +258,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &922449630
 GameObject:
@@ -386,7 +371,7 @@ GameObject:
   - component: {fileID: 1024568295}
   - component: {fileID: 1024568293}
   m_Layer: 0
-  m_Name: VideoFileManager
+  m_Name: VideoFileHandler
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -409,7 +394,19 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 132886399}
         m_TargetAssemblyTypeName: EyetrackingFileProcessor, Assembly-CSharp
-        m_MethodName: SearchGazePositionAtTimestamp
+        m_MethodName: SetTimestamp
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 88521441}
+        m_TargetAssemblyTypeName: LogHandler, Assembly-CSharp
+        m_MethodName: SetTimestamp
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -420,7 +417,7 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
   videoURL: D:/Bestanden/OneDrive/Video's/WIN_20211213_15_03_18_Pro.mp4
-  playSpeed: 100
+  playSpeed: 500
 --- !u!4 &1024568295
 Transform:
   m_ObjectHideFlags: 0
@@ -433,7 +430,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1026539436
 GameObject:
@@ -574,7 +571,7 @@ GameObject:
   - component: {fileID: 1398143381}
   - component: {fileID: 1398143380}
   m_Layer: 0
-  m_Name: Gaze
+  m_Name: GazeHandler
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -599,6 +596,21 @@ MonoBehaviour:
         m_TargetAssemblyTypeName: Logger, Assembly-CSharp
         m_MethodName: LogVector
         m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  onProcessingComplete:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1024568293}
+        m_TargetAssemblyTypeName: VideoFileManager, Assembly-CSharp
+        m_MethodName: ResumeVideo
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -669,8 +681,8 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
   useFileVideo: 1
-  resolution: {x: 1280, y: 720}
-  decimation: 5
+  resolution: {x: 1920, y: 1080}
+  decimation: 3
   tagSize: 0.0545
 --- !u!4 &1521864577
 Transform:
@@ -1116,51 +1128,51 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2897695632930535535, guid: d00a7e65122e269458d1eb382dd0f8b9, type: 3}
       propertyPath: digitalApriltags.Array.data[0].Offset.x
-      value: -3.53
+      value: -3.95
       objectReference: {fileID: 0}
     - target: {fileID: 2897695632930535535, guid: d00a7e65122e269458d1eb382dd0f8b9, type: 3}
       propertyPath: digitalApriltags.Array.data[0].Offset.z
-      value: 3.95
+      value: 3.53
       objectReference: {fileID: 0}
     - target: {fileID: 2897695632930535535, guid: d00a7e65122e269458d1eb382dd0f8b9, type: 3}
       propertyPath: digitalApriltags.Array.data[1].Offset.z
-      value: 3.95
+      value: 3.53
       objectReference: {fileID: 0}
     - target: {fileID: 2897695632930535535, guid: d00a7e65122e269458d1eb382dd0f8b9, type: 3}
       propertyPath: digitalApriltags.Array.data[2].Offset.x
-      value: 3.53
-      objectReference: {fileID: 0}
-    - target: {fileID: 2897695632930535535, guid: d00a7e65122e269458d1eb382dd0f8b9, type: 3}
-      propertyPath: digitalApriltags.Array.data[2].Offset.z
       value: 3.95
       objectReference: {fileID: 0}
     - target: {fileID: 2897695632930535535, guid: d00a7e65122e269458d1eb382dd0f8b9, type: 3}
-      propertyPath: digitalApriltags.Array.data[3].Offset.x
+      propertyPath: digitalApriltags.Array.data[2].Offset.z
       value: 3.53
+      objectReference: {fileID: 0}
+    - target: {fileID: 2897695632930535535, guid: d00a7e65122e269458d1eb382dd0f8b9, type: 3}
+      propertyPath: digitalApriltags.Array.data[3].Offset.x
+      value: 3.95
       objectReference: {fileID: 0}
     - target: {fileID: 2897695632930535535, guid: d00a7e65122e269458d1eb382dd0f8b9, type: 3}
       propertyPath: digitalApriltags.Array.data[4].Offset.x
-      value: 3.53
+      value: 3.95
       objectReference: {fileID: 0}
     - target: {fileID: 2897695632930535535, guid: d00a7e65122e269458d1eb382dd0f8b9, type: 3}
       propertyPath: digitalApriltags.Array.data[4].Offset.z
-      value: -3.95
+      value: -3.53
       objectReference: {fileID: 0}
     - target: {fileID: 2897695632930535535, guid: d00a7e65122e269458d1eb382dd0f8b9, type: 3}
       propertyPath: digitalApriltags.Array.data[5].Offset.z
-      value: -3.95
+      value: -3.53
       objectReference: {fileID: 0}
     - target: {fileID: 2897695632930535535, guid: d00a7e65122e269458d1eb382dd0f8b9, type: 3}
       propertyPath: digitalApriltags.Array.data[6].Offset.x
-      value: -3.53
-      objectReference: {fileID: 0}
-    - target: {fileID: 2897695632930535535, guid: d00a7e65122e269458d1eb382dd0f8b9, type: 3}
-      propertyPath: digitalApriltags.Array.data[6].Offset.z
       value: -3.95
       objectReference: {fileID: 0}
     - target: {fileID: 2897695632930535535, guid: d00a7e65122e269458d1eb382dd0f8b9, type: 3}
-      propertyPath: digitalApriltags.Array.data[7].Offset.x
+      propertyPath: digitalApriltags.Array.data[6].Offset.z
       value: -3.53
+      objectReference: {fileID: 0}
+    - target: {fileID: 2897695632930535535, guid: d00a7e65122e269458d1eb382dd0f8b9, type: 3}
+      propertyPath: digitalApriltags.Array.data[7].Offset.x
+      value: -3.95
       objectReference: {fileID: 0}
     - target: {fileID: 2897695632930535535, guid: d00a7e65122e269458d1eb382dd0f8b9, type: 3}
       propertyPath: digitalApriltags.Array.data[0].Position.x
@@ -1226,6 +1238,62 @@ PrefabInstance:
       propertyPath: digitalApriltags.Array.data[7].Position.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2897695632930535535, guid: d00a7e65122e269458d1eb382dd0f8b9, type: 3}
+      propertyPath: onTableUpdated.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2897695632930535535, guid: d00a7e65122e269458d1eb382dd0f8b9, type: 3}
+      propertyPath: onProcessingComplete.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2897695632930535535, guid: d00a7e65122e269458d1eb382dd0f8b9, type: 3}
+      propertyPath: onTableUpdated.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2897695632930535535, guid: d00a7e65122e269458d1eb382dd0f8b9, type: 3}
+      propertyPath: onTableUpdated.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 132886399}
+    - target: {fileID: 2897695632930535535, guid: d00a7e65122e269458d1eb382dd0f8b9, type: 3}
+      propertyPath: onTableUpdated.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2897695632930535535, guid: d00a7e65122e269458d1eb382dd0f8b9, type: 3}
+      propertyPath: onProcessingComplete.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2897695632930535535, guid: d00a7e65122e269458d1eb382dd0f8b9, type: 3}
+      propertyPath: onTableUpdated.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: SearchGazePositionAtTimestamp
+      objectReference: {fileID: 0}
+    - target: {fileID: 2897695632930535535, guid: d00a7e65122e269458d1eb382dd0f8b9, type: 3}
+      propertyPath: onProcessingComplete.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 132886399}
+    - target: {fileID: 2897695632930535535, guid: d00a7e65122e269458d1eb382dd0f8b9, type: 3}
+      propertyPath: onProcessingComplete.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2897695632930535535, guid: d00a7e65122e269458d1eb382dd0f8b9, type: 3}
+      propertyPath: onProcessingComplete.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: SearchGazePositionAtTimestamp
+      objectReference: {fileID: 0}
+    - target: {fileID: 2897695632930535535, guid: d00a7e65122e269458d1eb382dd0f8b9, type: 3}
+      propertyPath: onTableUpdated.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: EyetrackingFileProcessor, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 2897695632930535535, guid: d00a7e65122e269458d1eb382dd0f8b9, type: 3}
+      propertyPath: onProcessingComplete.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: EyetrackingFileProcessor, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 2897695632930535535, guid: d00a7e65122e269458d1eb382dd0f8b9, type: 3}
+      propertyPath: onTableUpdated.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 2897695632930535535, guid: d00a7e65122e269458d1eb382dd0f8b9, type: 3}
+      propertyPath: onProcessingComplete.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d00a7e65122e269458d1eb382dd0f8b9, type: 3}
 --- !u!1001 &3563047076649924240
@@ -1237,7 +1305,15 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3563047076754999260, guid: 2ac8e65a176ee5546bfa6f0fe04b05d6, type: 3}
       propertyPath: m_Name
-      value: WebcamManager
+      value: WebcamHandler
+      objectReference: {fileID: 0}
+    - target: {fileID: 3563047076754999261, guid: 2ac8e65a176ee5546bfa6f0fe04b05d6, type: 3}
+      propertyPath: resolution.x
+      value: 1920
+      objectReference: {fileID: 0}
+    - target: {fileID: 3563047076754999261, guid: 2ac8e65a176ee5546bfa6f0fe04b05d6, type: 3}
+      propertyPath: resolution.y
+      value: 1080
       objectReference: {fileID: 0}
     - target: {fileID: 3563047076754999261, guid: 2ac8e65a176ee5546bfa6f0fe04b05d6, type: 3}
       propertyPath: webcamPreview
@@ -1249,7 +1325,7 @@ PrefabInstance:
       objectReference: {fileID: 1062397883}
     - target: {fileID: 3563047076754999262, guid: 2ac8e65a176ee5546bfa6f0fe04b05d6, type: 3}
       propertyPath: m_RootOrder
-      value: 3
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 3563047076754999262, guid: 2ac8e65a176ee5546bfa6f0fe04b05d6, type: 3}
       propertyPath: m_LocalPosition.x

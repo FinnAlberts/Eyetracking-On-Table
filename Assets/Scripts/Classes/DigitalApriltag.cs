@@ -8,8 +8,8 @@ public class DigitalApriltag
     /// <summary>
     /// Constructor for digital Apriltag
     /// </summary>
-    /// <param name="_ID">Apriltag ID</param>
-    /// <param name="_offset">Offset of Apriltag</param>
+    /// <param name="_ID">The ID of the Apriltag</param>
+    /// <param name="_offset">Position of Apriltag relative to center of table</param>
     public DigitalApriltag(int _ID, Vector3 _offset)
     {
         ID = _ID;

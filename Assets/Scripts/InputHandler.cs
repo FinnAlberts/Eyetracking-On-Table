@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using UnityEditor;
 using UnityEngine;
 
 public class InputHandler : MonoBehaviour
@@ -55,14 +56,14 @@ public class InputHandler : MonoBehaviour
         ConfigurationManager.Instance.decimation = int.Parse(decimationInput.text, CultureInfo.InvariantCulture);
 
         // Set output file path in configuration manager
-        ConfigurationManager.Instance.outputPath = outputFolderInput.text + DateTime.Now.ToString() + ".txt";
+        ConfigurationManager.Instance.outputPath = outputFolderInput.text + "/results.txt";
 
         // Get lines from table configuration file
         List<string> lines = System.IO.File.ReadLines(tableConfigInput.text).ToList();
 
         // Set table scale in configuration manager
-        float tableScaleX = float.Parse(lines[0].Split('=')[1], CultureInfo.InvariantCulture);
-        float tableScaleY = float.Parse(lines[1].Split('=')[1], CultureInfo.InvariantCulture);
+        float tableScaleX = float.Parse(lines[0].Split('=')[1], CultureInfo.InvariantCulture) * 0.1f;
+        float tableScaleY = float.Parse(lines[1].Split('=')[1], CultureInfo.InvariantCulture) * 0.1f;
         ConfigurationManager.Instance.tableScale = new Vector2(tableScaleX, tableScaleY);
 
         // Set scale calibration in configuration managers
@@ -94,5 +95,11 @@ public class InputHandler : MonoBehaviour
             ConfigurationManager.Instance.digitalApriltags.Add(new DigitalApriltag(apriltagID, offset));
         }
 
+        ScenesManager.Instance.LoadEyetrackingProcessorScene();
+    }
+
+    public void SelectVideo()
+    {
+        // TODO: Select video button
     }
 }
