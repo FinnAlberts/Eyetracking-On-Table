@@ -102,9 +102,10 @@ public class DetectorManager : MonoBehaviour
         if (detector == null)
         {
             Debug.LogError("The Apriltag detector has not yet been initialized.");
+            return;
         }        
         
-        // AprilTag detection
+        // Apriltag detection
         var fov = Camera.main.fieldOfView * Mathf.Deg2Rad;
         detector.ProcessImage(_frame, fov, tagSize);
 

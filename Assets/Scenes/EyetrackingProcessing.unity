@@ -680,7 +680,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  useFileVideo: 1
+  useFileVideo: 0
   resolution: {x: 1920, y: 1080}
   decimation: 3
   tagSize: 0.0545

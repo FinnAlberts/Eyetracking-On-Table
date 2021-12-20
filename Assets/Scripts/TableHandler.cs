@@ -40,10 +40,9 @@ public class TableHandler : MonoBehaviour
     private Vector3 forwardDirectionLerped = Vector3.zero;
 
     /// <summary>
-    /// Update the position and orientation of the table using the detected Apriltags
+    /// Called before the first frame update
     /// </summary>
-    /// <param name="_apriltags">The detected Apriltags</param>
-    public void UpdateTable(List<AprilTag.TagPose> _apriltags)
+    private void Start()
     {
         // Load configuration
         if (ConfigurationManager.Instance != null)
@@ -52,7 +51,14 @@ public class TableHandler : MonoBehaviour
             scaleCalibration = ConfigurationManager.Instance.scaleCalibration;
             digitalApriltags = ConfigurationManager.Instance.digitalApriltags;
         }
+    }
 
+    /// <summary>
+    /// Update the position and orientation of the table using the detected Apriltags
+    /// </summary>
+    /// <param name="_apriltags">The detected Apriltags</param>
+    public void UpdateTable(List<AprilTag.TagPose> _apriltags)
+    {
         // Set detected tags in global list
         apriltags = _apriltags;
 

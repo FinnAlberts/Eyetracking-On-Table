@@ -48,7 +48,7 @@ public class ScenesManager : MonoBehaviour
     /// <summary>
     /// Load the processing complete scene
     /// </summary>
-    public void LoadprocessingCompleteScene()
+    public void LoadProcessingCompleteScene()
     {
         SceneManager.LoadScene("ProcessingComplete");
     }

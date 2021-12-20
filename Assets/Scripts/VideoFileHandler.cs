@@ -104,11 +104,11 @@ public class VideoFileHandler : MonoBehaviour
     /// <summary>
     /// Called on end of video
     /// </summary>
-    /// <param name="videoPlayer">The video player</param>
-    void EndReached(UnityEngine.Video.VideoPlayer videoPlayer)
+    /// <param name="_videoPlayer">The video player</param>
+    void EndReached(UnityEngine.Video.VideoPlayer _videoPlayer)
     {
-        videoPlayer.Stop();
-        ScenesManager.Instance.LoadprocessingCompleteScene();
+        _videoPlayer.Stop();
+        ScenesManager.Instance.LoadProcessingCompleteScene();
     }
 
     /// <summary>
@@ -124,7 +124,7 @@ public class VideoFileHandler : MonoBehaviour
         // Trigger onNewTimestamp event with current time
         onNewTimestamp?.Invoke(_source.time);
         
-        // Convert frame to Texture2D
+        // Convert frame to Texture2D. This is a quite intenste process, because data from the GPU has to be send to the CPU.
         RenderTexture renderTexture = _source.texture as RenderTexture;
 
         if (videoFrame.width != renderTexture.width || videoFrame.height != renderTexture.height)
@@ -139,7 +139,7 @@ public class VideoFileHandler : MonoBehaviour
 
         RenderTexture.active = null;
 
-        // Update the AprilTags
+        // Update the Apriltags
         DetectorManager.Instance.UpdateApriltags(videoFrame.GetPixels32());
     }
 
