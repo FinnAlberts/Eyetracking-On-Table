@@ -416,7 +416,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  videoURL: D:/Bestanden/OneDrive/Video's/WIN_20211213_15_03_18_Pro.mp4
+  videoURL: C:/Users/Gebruiker/Downloads/20211206T145805Z/20211206T145805Z/combined.mp4
   playSpeed: 500
 --- !u!4 &1024568295
 Transform:
@@ -680,10 +680,10 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  useFileVideo: 0
+  useFileVideo: 1
   resolution: {x: 1920, y: 1080}
   decimation: 3
-  tagSize: 0.0545
+  tagSize: 0.06
 --- !u!4 &1521864577
 Transform:
   m_ObjectHideFlags: 0
