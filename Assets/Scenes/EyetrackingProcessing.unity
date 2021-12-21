@@ -212,7 +212,7 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
   gazeDataFile: C:/Users/finna/OneDrive - ZuydHogeschool/Jaar 2/Stage/Eyetracking
-    data/20211206T145805Z/20211206T145805Z/gazedata
+    data/Recording Apriltags groot niet gekanteld/gazedata/gazedata
   gazeDatas:
     gazedata: []
   gazePosition: {x: 0, y: 0}
@@ -416,8 +416,9 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  videoURL: D:/Bestanden/OneDrive/Video's/WIN_20211213_15_03_18_Pro.mp4
-  playSpeed: 1
+  videoURL: C:/Users/finna/OneDrive - ZuydHogeschool/Jaar 2/Stage/Eyetracking data/Recording
+    Matrix/20211206T145805Z/combined.avi
+  playSpeed: 500
 --- !u!4 &1024568295
 Transform:
   m_ObjectHideFlags: 0
@@ -964,7 +965,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2897695632930535535, guid: d00a7e65122e269458d1eb382dd0f8b9, type: 3}
       propertyPath: lerpSpeed
-      value: 30
+      value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 2897695632930535535, guid: d00a7e65122e269458d1eb382dd0f8b9, type: 3}
       propertyPath: rotationOffset.x
