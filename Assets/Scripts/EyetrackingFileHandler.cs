@@ -54,7 +54,7 @@ public class EyetrackingFileHandler : MonoBehaviour
         gazeDatas = JsonUtility.FromJson<GazeDatas>(json);
 
         // Remove gaze data where no gaze data is available (gaze data is empty)
-        for (int i = gazeDatas.gazedata.Count - 1; i > 0; i--)
+        for (int i = gazeDatas.gazedata.Count - 1; i >= 0; i--)
         {
             Gazedata gazeData = gazeDatas.gazedata[i];
 

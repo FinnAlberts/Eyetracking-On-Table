@@ -30,6 +30,11 @@ public class TableHandler : MonoBehaviour
     private List<AprilTag.TagPose> apriltags = new List<AprilTag.TagPose>();
 
     /// <summary>
+    /// The lerpspeed
+    /// </summary>
+    [SerializeField] int lerpSpeed = 10;
+
+    /// <summary>
     /// Upwards direction, lerped
     /// </summary>
     private Vector3 upwardDirectionLerped = Vector3.zero;
@@ -270,8 +275,8 @@ public class TableHandler : MonoBehaviour
         }
 
         // Use a lerped direction for smooth rotations
-        forwardDirectionLerped = Vector3.Lerp(forwardDirectionLerped, averageForwardDirection, Time.deltaTime * 10);
-        upwardDirectionLerped = Vector3.Lerp(upwardDirectionLerped, averageUpwardDirection, Time.deltaTime * 10);
+        forwardDirectionLerped = Vector3.Lerp(forwardDirectionLerped, averageForwardDirection, Time.deltaTime * lerpSpeed);
+        upwardDirectionLerped = Vector3.Lerp(upwardDirectionLerped, averageUpwardDirection, Time.deltaTime * lerpSpeed);
 
         // Set the rotation while applying the set offset
         transform.rotation = Quaternion.LookRotation(forwardDirectionLerped, upwardDirectionLerped);
