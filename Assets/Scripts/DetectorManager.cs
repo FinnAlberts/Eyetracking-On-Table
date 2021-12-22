@@ -15,6 +15,11 @@ public class DetectorManager : MonoBehaviour
     public UnityEvent<List<AprilTag.TagPose>> onDetectedApriltagsUpdated;
 
     /// <summary>
+    /// Event for when no Apriltags have been detected
+    /// </summary>
+    public UnityEvent onNoApriltagsDetected;
+
+    /// <summary>
     /// Choose if webcam or a set video file (in video player) should be used
     /// </summary>
     public bool useFileVideo = false;
@@ -22,7 +27,6 @@ public class DetectorManager : MonoBehaviour
     /// <summary>
     /// Resolution of input file (can be video or webcam)
     /// </summary>
-    // TODO: Automatically detect resolution
     public Vector2Int resolution = new Vector2Int(1920, 1080); 
 
     /// <summary>
@@ -101,7 +105,6 @@ public class DetectorManager : MonoBehaviour
         // Check if detector has been initialized
         if (detector == null)
         {
-            Debug.LogError("The Apriltag detector has not yet been initialized.");
             return;
         }        
         
@@ -109,9 +112,17 @@ public class DetectorManager : MonoBehaviour
         var fov = Camera.main.fieldOfView * Mathf.Deg2Rad;
         detector.ProcessImage(_frame, fov, tagSize);
 
-        // Trigger event with list of currently detected Apriltags
+        // Set detected Apriltags in list
         List<AprilTag.TagPose> apriltags = detector.DetectedTags.ToList();
-        onDetectedApriltagsUpdated?.Invoke(apriltags);
+
+        // Check if Apriltags have been detected and trigger corresponding event
+        if (apriltags.Count == 0)
+        {
+            onNoApriltagsDetected?.Invoke();
+        } else
+        {
+            onDetectedApriltagsUpdated?.Invoke(apriltags);
+        }
     }
 
     /// <summary>
