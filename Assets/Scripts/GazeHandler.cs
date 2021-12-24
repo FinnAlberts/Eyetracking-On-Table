@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -47,6 +48,18 @@ public class GazeHandler : MonoBehaviour
             Vector3 hitRelative = hit.transform.InverseTransformPoint(hit.point);
             onRaycastHit?.Invoke(new Vector2(hitRelative.x, hitRelative.z));
         }
+
+        DetectorManager.Instance.raycastTime = Time.realtimeSinceStartupAsDouble - DetectorManager.Instance.startTime;
+        DetectorManager.Instance.startTime = Time.realtimeSinceStartupAsDouble;
+
+        File.AppendAllText("LOGS.txt", (
+            DetectorManager.Instance.frame + "; " +
+            DetectorManager.Instance.to2DTime + "; " +
+            DetectorManager.Instance.detectingTime + "; " +
+            DetectorManager.Instance.tableTime + "; " +
+            DetectorManager.Instance.searchGazeTime + "; " +
+            DetectorManager.Instance.raycastTime + "; \n"
+            ));
 
         // Trigger onProcessingComplete event
         onProcessingComplete?.Invoke();

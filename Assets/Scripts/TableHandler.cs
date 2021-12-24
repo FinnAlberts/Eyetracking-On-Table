@@ -73,6 +73,9 @@ public class TableHandler : MonoBehaviour
         // Set position of table
         SetPosition();
 
+        DetectorManager.Instance.tableTime = Time.realtimeSinceStartupAsDouble - DetectorManager.Instance.startTime;
+        DetectorManager.Instance.startTime = Time.realtimeSinceStartupAsDouble;
+
         // Trigger onProcessingComplete event 
         onTableUpdated?.Invoke();
     }

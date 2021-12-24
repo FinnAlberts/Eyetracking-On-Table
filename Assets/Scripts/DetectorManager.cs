@@ -115,6 +115,9 @@ public class DetectorManager : MonoBehaviour
         // Set detected Apriltags in list
         List<AprilTag.TagPose> apriltags = detector.DetectedTags.ToList();
 
+        DetectorManager.Instance.detectingTime= Time.realtimeSinceStartupAsDouble - DetectorManager.Instance.startTime;
+        DetectorManager.Instance.startTime = Time.realtimeSinceStartupAsDouble;
+
         // Check if Apriltags have been detected and trigger corresponding event
         if (apriltags.Count == 0)
         {
@@ -132,4 +135,14 @@ public class DetectorManager : MonoBehaviour
     {
         detector.Dispose();
     }
+
+    // DEBUG VARIABLES
+    // TODO: remove this!!!!!!
+    public double startTime = 0;
+    public double frame = 0;
+    public double to2DTime = 0;
+    public double detectingTime = 0;
+    public double tableTime = 0;
+    public double searchGazeTime = 0;
+    public double raycastTime = 0;
 }

@@ -118,6 +118,8 @@ public class VideoFileHandler : MonoBehaviour
     /// <param name="_frameIdx">The index of the current frame</param>
     void OnNewFrame(VideoPlayer _source, long _frameIdx)
     {
+        DetectorManager.Instance.startTime = Time.realtimeSinceStartupAsDouble;
+        DetectorManager.Instance.frame = _frameIdx;
         // Pause the video untill data is processed
         _source.Pause();
         
@@ -138,6 +140,9 @@ public class VideoFileHandler : MonoBehaviour
         videoFrame.Apply();
 
         RenderTexture.active = null;
+
+        DetectorManager.Instance.to2DTime = Time.realtimeSinceStartupAsDouble - DetectorManager.Instance.startTime;
+        DetectorManager.Instance.startTime = Time.realtimeSinceStartupAsDouble;
 
         // Update the Apriltags
         DetectorManager.Instance.UpdateApriltags(videoFrame.GetPixels32());
