@@ -28,7 +28,7 @@ public class ConfigurationManager : MonoBehaviour
     public float scaleCalibration;
 
     /// <summary>
-    /// Size of Apriltags
+    /// Size of Apriltags in centimeters
     /// </summary>
     public float tagSize;
 
