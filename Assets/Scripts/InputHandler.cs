@@ -44,8 +44,6 @@ public class InputHandler : MonoBehaviour
             return;
         }
 
-        // TODO: Check if input is correct input (e.g. does the path really lead to a file?)
-
         // Set video file path in configuration manager
         ConfigurationManager.Instance.videoPath = videoFileInput.text;
 
@@ -56,7 +54,13 @@ public class InputHandler : MonoBehaviour
         ConfigurationManager.Instance.decimation = int.Parse(decimationInput.text, CultureInfo.InvariantCulture);
 
         // Set output file path in configuration manager
-        ConfigurationManager.Instance.outputPath = outputFolderInput.text + "/results.txt";
+        if (outputFolderInput.text.Substring(outputFolderInput.text.Length - 1) == "\\" || outputFolderInput.text.Substring(outputFolderInput.text.Length - 1) == "/")
+        {
+            ConfigurationManager.Instance.outputPath = outputFolderInput.text + "results.txt";
+        } else
+        {
+            ConfigurationManager.Instance.outputPath = outputFolderInput.text + "/results.txt";
+        }
 
         // Get lines from table configuration file
         List<string> lines = System.IO.File.ReadLines(tableConfigInput.text).ToList();

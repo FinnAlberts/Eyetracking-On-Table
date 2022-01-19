@@ -85,9 +85,6 @@ public class EyetrackingFileHandler : MonoBehaviour
         // Set gaze position
         gazePosition = new Vector2((float)gazeData.data.gaze2d[0], 1 - (float)gazeData.data.gaze2d[1]);
 
-        DetectorManager.Instance.searchGazeTime = Time.realtimeSinceStartupAsDouble - DetectorManager.Instance.startTime;
-        DetectorManager.Instance.startTime = Time.realtimeSinceStartupAsDouble;
-
         // Trigger event
         onGazePositionUpdated?.Invoke(gazePosition);
     }
